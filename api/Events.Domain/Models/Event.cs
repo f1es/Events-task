@@ -8,7 +8,8 @@ public class Event
 	public DateTime Date { get; set; }
 	public string? Place { get; set; }
 	public string? Category { get; set; }
-	public int MaxParticipantCount { get; set; }
-	public string? Picture { get; set; }
+	public int MaxParticipantsCount { get; set; }
+	public byte[]? Image { get; set; }
+
 	public ICollection<Participant>? Participants { get; set; }
 }

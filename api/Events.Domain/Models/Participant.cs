@@ -8,6 +8,10 @@ public class Participant
 	public DateTime Birtday { get; set; }
 	public DateTime RegistrationDate { get; set; }
 	public string? Email { get; set; }
-	public Guid? EventId { get; set; }
-	public Event? Event { get; set; }
+
+	public Guid EventId { get; set; }
+	public Event Event { get; set; }
+	public Guid UserId { get; set; }
+	public User User { get; set; }
+
 }
