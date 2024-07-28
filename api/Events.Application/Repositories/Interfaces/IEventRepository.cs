@@ -4,7 +4,7 @@ namespace Events.Application.Repositories.Interfaces;
 
 public interface IEventRepository : IRepositoryBase<Event>
 {
-	Task<IEnumerable<Event>> GetAllAsync();
-	Task<Event> GetByIdAsync(Guid id);
-	Task<Event> GetByNameAsync(string name);
+	Task<IEnumerable<Event>> GetAllAsync(bool trackChanges);
+	Task<Event> GetByIdAsync(Guid id, bool trackChanges);
+	Task<Event> GetByNameAsync(string name, bool trackChanges);
 }

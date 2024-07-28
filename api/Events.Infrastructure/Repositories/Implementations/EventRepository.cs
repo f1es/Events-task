@@ -13,15 +13,15 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
         
     }
 
-	public async Task<IEnumerable<Event>> GetAllAsync() =>
-		await GetAll(trackChanges: false)
+	public async Task<IEnumerable<Event>> GetAllAsync(bool trackChanges) =>
+		await GetAll(trackChanges)
 		.ToListAsync();
 
-	public async Task<Event> GetByIdAsync(Guid id) =>
-		await GetByPredicate(e => e.Id.Equals(id), trackChanges: false)
+	public async Task<Event> GetByIdAsync(Guid id, bool trackChanges) =>
+		await GetByPredicate(e => e.Id.Equals(id), trackChanges)
 		.SingleOrDefaultAsync();
 
-	public async Task<Event> GetByNameAsync(string name) =>
-		await GetByPredicate(e => e.Name.Equals(name), trackChanges: false)
+	public async Task<Event> GetByNameAsync(string name, bool trackChanges) =>
+		await GetByPredicate(e => e.Name.Equals(name), trackChanges)
 		.SingleOrDefaultAsync();
 }
