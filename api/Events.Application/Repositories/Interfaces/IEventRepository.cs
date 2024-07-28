@@ -1,6 +1,10 @@
-﻿namespace Events.Application.Repositories.Interfaces;
+﻿using Events.Domain.Models;
 
-public interface IEventRepository
+namespace Events.Application.Repositories.Interfaces;
+
+public interface IEventRepository : IRepositoryBase<Event>
 {
-
+	Task<IEnumerable<Event>> GetAllAsync();
+	Task<Event> GetByIdAsync(Guid id);
+	Task<Event> GetByNameAsync(string name);
 }
