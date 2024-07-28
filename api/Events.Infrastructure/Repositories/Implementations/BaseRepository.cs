@@ -27,13 +27,22 @@ public abstract class BaseRepository<T> : IRepositoryBase<T> where T : class
 		.Set<T>()
 		.Update(entity);
 
-	public IQueryable<T> GetAll() =>
+	public IQueryable<T> GetAll(bool trackChanges) =>
+		trackChanges ?
+		eventsDBContext
+		.Set<T>() 
+		:
 		eventsDBContext
 		.Set<T>()
 		.AsNoTracking();
 
-	public IQueryable<T> GetByPredicate(Expression<Func<T, bool>> predicate) =>
+	public IQueryable<T> GetByPredicate(Expression<Func<T, bool>> predicate, bool trackChanges) =>
+		trackChanges ?
 		eventsDBContext 
+		.Set<T>()
+		.Where(predicate) 
+		:
+		eventsDBContext
 		.Set<T>()
 		.Where(predicate)
 		.AsNoTracking();

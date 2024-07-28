@@ -14,11 +14,11 @@ public class ParticipantRepository : BaseRepository<Participant>, IParticipantRe
     }
 
 	public async Task<IEnumerable<Participant>> GetAllAsync() =>
-		await GetAll()
+		await GetAll(trackChanges: false)
 		.OrderBy(p => p.Name)
 		.ToListAsync();
 
 	public async Task<Participant> GetByIdAsync(Guid eventId, Guid id) => 
-		await GetByPredicate(p => p.Id.Equals(id))
+		await GetByPredicate(p => p.Id.Equals(id), trackChanges: false)
 		.SingleOrDefaultAsync();
 }
