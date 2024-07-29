@@ -21,6 +21,12 @@ public class ImageRepository : BaseRepository<Image>, IImageRepository
 		Create(image);
 	}
 
+	public void DeleteImage(Image image) =>
+		Delete(image);
+
+	public void UpdateImage(Guid eventId, Image image) => 
+		Update(image);
+
 	public Task<Image> GetImageAsync(Guid eventId, bool trackChanges) =>
 		GetByPredicate(i => i.EventId.Equals(eventId), trackChanges)
 		.SingleOrDefaultAsync();

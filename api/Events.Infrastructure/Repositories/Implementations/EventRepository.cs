@@ -24,4 +24,13 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
 	public async Task<Event> GetByNameAsync(string name, bool trackChanges) =>
 		await GetByPredicate(e => e.Name.Equals(name), trackChanges)
 		.SingleOrDefaultAsync();
+
+	public void CreateEvent(Event eventModel) => 
+		Create(eventModel);
+
+	public void UpdateEvent(Event eventModel) =>
+		Update(eventModel);
+
+	public void DeleteEvent(Event eventModel) =>
+		Delete(eventModel);
 }

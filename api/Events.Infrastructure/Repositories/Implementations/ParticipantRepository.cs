@@ -28,4 +28,9 @@ public class ParticipantRepository : BaseRepository<Participant>, IParticipantRe
 		participant.EventId = eventId;
 		Create(participant);
 	}
+	public void DeleteParticipant(Participant participant) =>
+		Delete(participant);
+
+	public void UpdateParticipant(Participant participant) => 
+		Update(participant);
 }
