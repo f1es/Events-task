@@ -6,9 +6,9 @@ namespace Events.Application.Services.Interfaces;
 public interface IEventService
 {
 	Task<IEnumerable<EventResponseDto>> GetAllEventsAsync(bool trackChanges);
-	Task<EventResponseDto> GetEventAsync(Guid id, bool trackChanges);
+	Task<EventResponseDto> GetEventByIdAsync(Guid id, bool trackChanges);
 	Task<EventResponseDto> GetEventByNameAsync(string name, bool trackChanges);
 	Task<EventResponseDto> CreateEventAsync(EventForCreateRequestDto eventDto);
-	Task UpdateEventAsync(EventForUpdateRequestDto eventDto);
-	Task DeleteEventAsync(Guid id);
+	Task UpdateEventAsync(Guid id, EventForUpdateRequestDto eventDto, bool trackChanges);
+	Task DeleteEventAsync(Guid id, bool trackChanges);
 }
