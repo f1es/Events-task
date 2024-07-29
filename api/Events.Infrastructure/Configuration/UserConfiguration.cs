@@ -19,9 +19,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
 		builder.Property(u => u.PasswordHash)
 			.IsRequired();
-
-		builder.HasMany(u => u.Participants)
-			.WithOne(p => p.User)
-			.HasForeignKey(p => p.User);
 	}
 }

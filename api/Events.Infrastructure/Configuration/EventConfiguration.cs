@@ -33,6 +33,6 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 		builder.HasOne(e => e.Image)
 			.WithOne(i => i.Event)
 			.HasForeignKey<Image>(i => i.EventId)
-			.IsRequired(false);
+			.IsRequired();
 	}
 }
