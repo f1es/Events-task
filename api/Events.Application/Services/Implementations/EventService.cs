@@ -76,7 +76,9 @@ public class EventService : IEventService
 	{
 		var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
 
-		_repositoryManager.Event.UpdateEvent(eventModel);
+		eventModel = _mapper.Map(eventDto, eventModel);
+
+		//_repositoryManager.Event.UpdateEvent(eventModel);
 
 		await _repositoryManager.SaveAsync();
 	}

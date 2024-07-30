@@ -1,4 +1,8 @@
+using Events.Application.Repositories.Interfaces;
+using Events.Application.Services.Implementations;
+using Events.Application.Services.Interfaces;
 using Events.Infrastructure.Context;
+using Events.Infrastructure.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddDbContext<EventsDBContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"));

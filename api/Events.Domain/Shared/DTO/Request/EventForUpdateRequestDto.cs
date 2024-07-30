@@ -6,4 +6,4 @@ public record EventForUpdateRequestDto(
 	DateTime Date,
 	string Place,
 	string Category,
-	int MaxParticipantCount);
+	int MaxParticipantsCount);
