@@ -33,12 +33,7 @@ public class EventService : IEventService
 
 	public async Task DeleteEventAsync(Guid id, bool trackChanges)
 	{
-		var eventModel = await _repositoryManager.Event.GetByIdAsync(id, trackChanges);
-
-		if (eventModel is null)
-		{
-			throw new NotFoundException($"event with id {id} not found");
-		}
+		var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
 
 		_repositoryManager.Event.DeleteEvent(eventModel);
 
@@ -56,12 +51,7 @@ public class EventService : IEventService
 
 	public async Task<EventResponseDto> GetEventByIdAsync(Guid id, bool trackChanges)
 	{
-		var eventModel = await _repositoryManager.Event.GetByIdAsync(id, trackChanges);
-
-		if (eventModel is null)
-		{
-			throw new NotFoundException($"event with id {id} not found");
-		}
+		var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
 
 		var eventRsponse = _mapper.Map<EventResponseDto>(eventModel);
 
@@ -84,15 +74,22 @@ public class EventService : IEventService
 
 	public async Task UpdateEventAsync(Guid id, EventForUpdateRequestDto eventDto, bool trackChanges)
 	{
-		var updatingEvent = await _repositoryManager.Event.GetByIdAsync(id, trackChanges);
+		var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
 
-		if (updatingEvent is null)
+		_repositoryManager.Event.UpdateEvent(eventModel);
+
+		await _repositoryManager.SaveAsync();
+	}
+
+	private async Task<Event> GetEventByIdAndCheckIfExistAsync(Guid id, bool trackChanges)
+	{
+		var eventModel = await _repositoryManager.Event.GetByIdAsync(id, trackChanges);
+
+		if (eventModel is null)
 		{
 			throw new NotFoundException($"event with id {id} not found");
 		}
 
-		_repositoryManager.Event.UpdateEvent(updatingEvent);
-
-		await _repositoryManager.SaveAsync();
+		return eventModel;
 	}
 }
