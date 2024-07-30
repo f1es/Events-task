@@ -12,5 +12,9 @@ public class MapperProfile : Profile
         CreateMap<EventForCreateRequestDto, Event>();
 
         CreateMap<Event, EventResponseDto>();
+
+        CreateMap<ParticipantForCreateRequestDto, Participant>();
+
+        CreateMap<Participant, ParticipantResponseDto>();
     }
 }
