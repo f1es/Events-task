@@ -5,4 +5,5 @@ public record ParticipantForCreateRequestDto(
 	string Surname,
 	DateTime Birthday,
 	DateTime RegistrationDate,
-	string Email);
+	string Email,
+	Guid UserId);

@@ -26,6 +26,7 @@ public class ParticipantService : IParticipantService
 		bool trackChanges)
 	{
 		var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
+		var userModel = await GetUserByIdAndCheckIfExistAsync(userId, trackChanges);
 
 		var participantModel = _mapper.Map<Participant>(participant);
 
@@ -81,7 +82,6 @@ public class ParticipantService : IParticipantService
 
 		return eventModel;
 	}
-
 	private async Task<Participant> GetParticipantByIdAndCheckIfExistAsync(Guid eventId, Guid id, bool trackChanges)
 	{
 		var participantModel = await _repositoryManager.Participant.GetByIdAsync(eventId, id, trackChanges);
@@ -91,5 +91,15 @@ public class ParticipantService : IParticipantService
 		}
 
 		return participantModel;
+	}
+	private async Task<User> GetUserByIdAndCheckIfExistAsync(Guid userId, bool trackChanges)
+	{
+		var userModel = await _repositoryManager.User.GetByIdAsync(userId, trackChanges);
+		if (userModel is null)
+		{
+			throw new NotFoundException($"user with id {userId} not found");
+		}
+
+		return userModel;
 	}
 }
