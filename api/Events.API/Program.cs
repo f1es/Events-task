@@ -1,3 +1,4 @@
+using Events.API.Extensions;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Implementations;
 using Events.Application.Services.Interfaces;
@@ -23,6 +24,8 @@ builder.Services.AddDbContext<EventsDBContext>(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
