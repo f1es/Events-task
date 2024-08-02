@@ -5,7 +5,7 @@ namespace Events.Application.Services.Interfaces;
 
 public interface IUserService
 {
-	public Task<User> RegisterUser(UserRegisterRequestDto user);
-	public Task<string> LoginUser(UserLoginRequestDto user);
+	public Task RegisterUserAsync(UserRegisterRequestDto user, bool trackChanges);
+	public Task<string> LoginUserAsync(UserLoginRequestDto user, bool trackChanges);
 	
 }
