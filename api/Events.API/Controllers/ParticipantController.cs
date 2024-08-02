@@ -1,11 +1,13 @@
 ﻿using Events.Application.Services.Interfaces;
 using Events.Domain.Shared.DTO.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers;
 
 [ApiController]
 [Route("api/{eventId:guid}/participants")]
+[Authorize]
 public class ParticipantController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;

@@ -13,6 +13,13 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         _eventsDBContext = eventsDBContext;
     }
+	public async Task<User> GetByIdAsync(Guid id, bool trackChanges) =>
+		await GetByPredicate(u => u.Id.Equals(id), trackChanges)
+		.SingleOrDefaultAsync();
+
+	public async Task<User> GetByUsernameAsync(string username, bool trackChanges) => 
+		await GetByPredicate(u => u.Username.Equals(username), trackChanges)
+		.SingleOrDefaultAsync();
 
 	public void CreateUser(User user) =>
 		Create(user);
@@ -20,9 +27,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 	public void DeleteUser(User user) => 
 		Delete(user);
 
-	public async Task<User> GetByIdAsync(Guid id, bool trackChanges) =>
-		await GetByPredicate(u => u.Id.Equals(id), trackChanges)
-		.SingleOrDefaultAsync();
 
 	public void UpdateUser(User user) => 
 		Update(user);

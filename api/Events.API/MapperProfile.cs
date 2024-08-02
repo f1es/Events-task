@@ -18,5 +18,8 @@ public class MapperProfile : Profile
         CreateMap<ParticipantForCreateRequestDto, Participant>();
 
         CreateMap<Participant, ParticipantResponseDto>();
+
+        CreateMap<UserRegisterRequestDto, User>()
+            .ForMember(u => u.PasswordHash, opt => opt.Ignore());
     }
 }

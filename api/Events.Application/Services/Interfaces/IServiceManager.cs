@@ -6,4 +6,5 @@ public interface IServiceManager
 	IParticipantService ParticipantService { get; }
 	IImageService ImageService { get; }
 	IUserService UserService { get; }
+	IJwtProvider JwtProvider { get; }
 }
