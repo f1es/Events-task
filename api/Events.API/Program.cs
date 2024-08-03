@@ -1,4 +1,5 @@
 using Events.API.Extensions;
+using Events.Application.JWT.Implementations;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Implementations;
 using Events.Application.Services.Interfaces;
@@ -6,7 +7,7 @@ using Events.Infrastructure.Context;
 using Events.Infrastructure.Repositories.Implementations;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Events.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.ConfigureValidators();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
