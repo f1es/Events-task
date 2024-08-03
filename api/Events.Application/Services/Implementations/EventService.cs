@@ -78,8 +78,6 @@ public class EventService : IEventService
 
 		eventModel = _mapper.Map(eventDto, eventModel);
 
-		//_repositoryManager.Event.UpdateEvent(eventModel);
-
 		await _repositoryManager.SaveAsync();
 	}
 

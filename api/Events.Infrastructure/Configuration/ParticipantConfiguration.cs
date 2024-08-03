@@ -16,7 +16,7 @@ public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
 		builder.Property(p => p.Surname)
 			.IsRequired();
 
-		builder.Property(p => p.Birtday)
+		builder.Property(p => p.Birthday)
 			.IsRequired();
 
 		builder.HasOne(p => p.Event)
