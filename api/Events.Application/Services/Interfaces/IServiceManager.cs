@@ -1,4 +1,6 @@
-﻿namespace Events.Application.Services.Interfaces;
+﻿using Events.Application.JWT.Interfaces;
+
+namespace Events.Application.Services.Interfaces;
 
 public interface IServiceManager
 {

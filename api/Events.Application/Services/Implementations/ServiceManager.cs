@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Events.Application.JWT.Implementations;
+using Events.Application.JWT.Interfaces;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
 using Microsoft.Extensions.Options;

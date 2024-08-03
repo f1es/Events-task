@@ -1,4 +1,4 @@
-﻿using Events.Application.Services.Implementations;
+﻿using Events.Application.JWT.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
