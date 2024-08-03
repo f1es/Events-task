@@ -2,6 +2,7 @@
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Events.API.Controllers;
 
@@ -43,18 +44,23 @@ public class ParticipantController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status201Created)]
 	public async Task<IActionResult> CreateParticipant(Guid eventId, [FromBody] ParticipantForCreateRequestDto participant)
     {
+        Request.Cookies.TryGetValue("cook", out string? token);
+        var userId = _serviceManager.JwtProvider.GetUserId(token);
+
         var participantResponse = await _serviceManager
             .ParticipantService
-            .CreateParticipantAsync(eventId, participant.UserId, participant, trackChanges: false);
+            .CreateParticipantAsync(eventId, userId, participant, trackChanges: false);
 
-        return CreatedAtRoute("ParticipantById", new { id = participantResponse.Id }, participantResponse);
+        return CreatedAtRoute("ParticipantById", new { eventId, id = participantResponse.Id }, participantResponse);
     }
 
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteParticipant(Guid eventId, Guid id)
     {
-        await _serviceManager.ParticipantService.DeleteParticipantAsync(eventId, id, trackChanges: false);
+        await _serviceManager
+            .ParticipantService
+            .DeleteParticipantAsync(eventId, id, trackChanges: false);
 
         return NoContent();
     }
