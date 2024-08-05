@@ -8,7 +8,7 @@ namespace Events.API.Extensions;
 
 public static class ServicesExtension
 {
-    public static void AddApiAuthentication(
+    public static void ConfigureApiAuthentication(
 		this IServiceCollection services,
 		IConfiguration configuration)
 	{
@@ -38,5 +38,16 @@ public static class ServicesExtension
 			});
 
 		services.AddAuthorization();
+	}
+
+	public static void ConfigureCors(IServiceCollection services)
+	{
+		services.AddCors(options =>
+		{
+			options.AddPolicy("CorsPolicy", builder =>
+			builder.AllowAnyOrigin()
+			.AllowAnyHeader()
+			.AllowAnyMethod());
+		});
 	}
 }
