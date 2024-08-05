@@ -8,11 +8,11 @@ public class UserLoginRequestDtoValidation : AbstractValidator<UserLoginRequestD
     public UserLoginRequestDtoValidation()
     {
         RuleFor(u => u.Username)
-            .NotEmpty()
-            .MaximumLength(50);
+            .Length(4, 50).WithMessage("Incorrect username")
+            .NotEmpty();
 
         RuleFor(u => u.Password)
-            .NotEmpty()
-            .MaximumLength(100);
+            .Length(6, 50).WithMessage("Incorrect password")
+            .NotEmpty();
     }
 }

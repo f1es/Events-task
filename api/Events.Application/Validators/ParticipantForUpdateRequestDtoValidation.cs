@@ -8,12 +8,12 @@ public class ParticipantForUpdateRequestDtoValidation : AbstractValidator<Partic
     public ParticipantForUpdateRequestDtoValidation()
     {
 		RuleFor(p => p.Name)
-			.NotEmpty()
-			.MaximumLength(200);
+			.MaximumLength(200)
+			.NotEmpty();
 
 		RuleFor(p => p.Surname)
-			.NotEmpty()
-			.MaximumLength(200);
+			.MaximumLength(200)
+			.NotEmpty();
 
 		RuleFor(p => p.Birthday)
 			.NotEmpty();

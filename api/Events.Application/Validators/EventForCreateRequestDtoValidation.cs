@@ -8,8 +8,8 @@ public class EventForCreateRequestDtoValidation : AbstractValidator<EventForCrea
     public EventForCreateRequestDtoValidation()
     {
         RuleFor(e => e.Name)
-            .NotEmpty()
-            .MaximumLength(250);
+            .MaximumLength(250)
+            .NotEmpty();
 
         RuleFor(e => e.Description)
             .MinimumLength(500);

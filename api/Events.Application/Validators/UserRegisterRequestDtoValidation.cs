@@ -8,13 +8,12 @@ public class UserRegisterRequestDtoValidation : AbstractValidator<UserRegisterRe
     public UserRegisterRequestDtoValidation()
     {
         RuleFor(u => u.Username)
-            .MinimumLength(4)
-            .MaximumLength(50)
+            .Length(4, 50)
             .NotEmpty();
 
         RuleFor(u => u.Password)
-            .MinimumLength(6)
-            .MaximumLength(100)
+            .MinimumLength(6).WithMessage("Password length must be at least 6 characters")
+            .MinimumLength(50).WithMessage("Password length must be less than 50 characters")
             .NotEmpty();
     }
 }
