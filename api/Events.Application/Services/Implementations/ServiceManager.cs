@@ -3,6 +3,8 @@ using Events.Application.JWT.Implementations;
 using Events.Application.JWT.Interfaces;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
+using Events.Domain.Shared.DTO.Request;
+using FluentValidation;
 using Microsoft.Extensions.Options;
 
 namespace Events.Application.Services.Implementations;
@@ -18,13 +20,28 @@ public class ServiceManager : IServiceManager
     public ServiceManager(
         IRepositoryManager repositoryManager,
         IMapper mapper,
-        IOptions<JwtOptions> jwtOptions)
+        IOptions<JwtOptions> jwtOptions,
+        IValidator<EventForCreateRequestDto> eventCreateValidator,
+        IValidator<EventForUpdateRequestDto> eventUpdateValidator,
+        IValidator<ParticipantForCreateRequestDto> participantCreateValidator,
+        IValidator<ParticipantForUpdateRequestDto> participantForUpdateValidator)
     {
         _eventService = new Lazy<IEventService>(() =>
-        new EventService(repositoryManager, mapper));
+        new EventService(
+        repositoryManager,
+        mapper,
+        eventCreateValidator,
+        eventUpdateValidator));
 
         _participantService = new Lazy<IParticipantService>(() =>
-        new ParticipantService(repositoryManager, mapper));
+        new ParticipantService(
+        repositoryManager,
+        mapper,
+        participantForUpdateValidator,
+        participantCreateValidator));
+
+        _imageService = new Lazy<IImageService>(() =>
+        new ImageService(repositoryManager, mapper));
 
         _jwtProvider = new Lazy<IJwtProvider>(() =>
         new JwtProvider(jwtOptions));
@@ -38,12 +55,11 @@ public class ServiceManager : IServiceManager
             PasswordHasher, 
             mapper, 
             JwtProvider));
-
     }
 
     public IEventService EventService => _eventService.Value;
 	public IParticipantService ParticipantService => _participantService.Value;
-	public IImageService ImageService => throw new NotImplementedException();
+	public IImageService ImageService => _imageService.Value;
 	public IUserService UserService => _userService.Value;
     public IJwtProvider JwtProvider => _jwtProvider.Value;
     public IPasswordHasher PasswordHasher => _passwordHasher.Value;
