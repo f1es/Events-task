@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
+using Events.Application.Validators;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
+using FluentValidation;
 
 namespace Events.Application.Services.Implementations;
 
@@ -12,15 +14,28 @@ public class EventService : IEventService
 {
 	private readonly IRepositoryManager _repositoryManager;
 	private readonly IMapper _mapper;
+	private readonly IValidator<EventForCreateRequestDto> _createValidator;
+	private readonly IValidator<EventForUpdateRequestDto> _updateValidator;
     public EventService(
 		IRepositoryManager repositoryManager, 
-		IMapper mapper)
+		IMapper mapper,
+		IValidator<EventForCreateRequestDto> createValidator,
+		IValidator<EventForUpdateRequestDto> updateValidator)
     {
 		_repositoryManager = repositoryManager;
 		_mapper = mapper;
+		_createValidator = createValidator;
+		_updateValidator = updateValidator;
     }
     public async Task<EventResponseDto> CreateEventAsync(EventForCreateRequestDto eventDto)
 	{
+		var validationResult = await _createValidator.ValidateAsync(eventDto);
+
+		if (!validationResult.IsValid)
+		{
+			throw new BadRequestException("Request model is invalid");
+		}
+
 		var mappedEvent = _mapper.Map<Event>(eventDto);
 
 		_repositoryManager.Event.CreateEvent(mappedEvent);
@@ -74,6 +89,13 @@ public class EventService : IEventService
 
 	public async Task UpdateEventAsync(Guid id, EventForUpdateRequestDto eventDto, bool trackChanges)
 	{
+		var validationResult = await _updateValidator.ValidateAsync(eventDto);
+
+		if (!validationResult.IsValid)
+		{
+			throw new BadRequestException("Request model is invalid");
+		}
+
 		var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
 
 		eventModel = _mapper.Map(eventDto, eventModel);
