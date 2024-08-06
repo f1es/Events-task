@@ -46,6 +46,7 @@ public class ExceptionHandlerMiddleware
 			NotFoundException => HttpStatusCode.NotFound,
 			FailedToLoginException => HttpStatusCode.Unauthorized,
 			BadRequestException => HttpStatusCode.BadRequest,
+			InvalidModelException => HttpStatusCode.BadRequest,
 			_ => HttpStatusCode.InternalServerError
 		};
 }

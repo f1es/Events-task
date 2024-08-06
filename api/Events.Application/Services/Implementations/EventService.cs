@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Events.Application.Extensions;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
 using Events.Application.Validators;
@@ -33,7 +34,7 @@ public class EventService : IEventService
 
 		if (!validationResult.IsValid)
 		{
-			throw new BadRequestException("Request model is invalid");
+			throw new InvalidModelException(validationResult.GetMessage());
 		}
 
 		var mappedEvent = _mapper.Map<Event>(eventDto);
@@ -93,7 +94,7 @@ public class EventService : IEventService
 
 		if (!validationResult.IsValid)
 		{
-			throw new BadRequestException("Request model is invalid");
+			throw new InvalidModelException(validationResult.GetMessage());
 		}
 
 		var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);

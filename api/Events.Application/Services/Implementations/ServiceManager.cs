@@ -5,6 +5,7 @@ using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
 using Events.Domain.Shared.DTO.Request;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace Events.Application.Services.Implementations;
@@ -24,7 +25,10 @@ public class ServiceManager : IServiceManager
         IValidator<EventForCreateRequestDto> eventCreateValidator,
         IValidator<EventForUpdateRequestDto> eventUpdateValidator,
         IValidator<ParticipantForCreateRequestDto> participantCreateValidator,
-        IValidator<ParticipantForUpdateRequestDto> participantForUpdateValidator)
+        IValidator<ParticipantForUpdateRequestDto> participantForUpdateValidator,
+        IValidator<UserLoginRequestDto> userLoginValidator,
+        IValidator<UserRegisterRequestDto> userRegisterValidator,
+        IValidator<IFormFile> imageValidator)
     {
         _eventService = new Lazy<IEventService>(() =>
         new EventService(
@@ -41,7 +45,7 @@ public class ServiceManager : IServiceManager
         participantCreateValidator));
 
         _imageService = new Lazy<IImageService>(() =>
-        new ImageService(repositoryManager, mapper));
+        new ImageService(repositoryManager, mapper, imageValidator));
 
         _jwtProvider = new Lazy<IJwtProvider>(() =>
         new JwtProvider(jwtOptions));
@@ -54,7 +58,9 @@ public class ServiceManager : IServiceManager
             repositoryManager, 
             PasswordHasher, 
             mapper, 
-            JwtProvider));
+            JwtProvider,
+            userLoginValidator,
+            userRegisterValidator));
     }
 
     public IEventService EventService => _eventService.Value;

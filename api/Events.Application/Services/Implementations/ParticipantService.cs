@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Events.Application.Extensions;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
 using Events.Domain.Exceptions;
@@ -36,7 +37,7 @@ public class ParticipantService : IParticipantService
 
 		if (!validationResult.IsValid)
 		{
-			throw new BadRequestException("Request model is invalid");
+			throw new InvalidModelException(validationResult.GetMessage());
 		}
 
 		var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
@@ -96,7 +97,7 @@ public class ParticipantService : IParticipantService
 		
 		if (!validationResult.IsValid)
 		{
-			throw new BadRequestException("Request model is invalid");
+			throw new InvalidModelException(validationResult.GetMessage());
 		}
 
 		var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
