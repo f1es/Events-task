@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Events.Application.Extensions;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
@@ -21,5 +22,12 @@ public class MapperProfile : Profile
 
         CreateMap<UserRegisterRequestDto, User>()
             .ForMember(u => u.PasswordHash, opt => opt.Ignore());
+
+        CreateMap<IFormFile, Image>()
+            .ForMember(i => i.Name, opt => opt.MapFrom(f => f.FileName))
+            .ForMember(i => i.Type, opt => opt.MapFrom(f => f.ContentType))
+            .ForMember(i => i.Content, opt => opt.MapFrom(f => f.OpenReadStream().ToByteArray()));
+
+        CreateMap<Image, ImageResponseDto>();
     }
 }
