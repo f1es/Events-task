@@ -13,4 +13,5 @@ public interface IParticipantService
 	Task<IEnumerable<ParticipantResponseDto>> GetAllParticipantsAsync(Guid eventId, bool trackChanges);
 	Task<ParticipantResponseDto> GetParticipantByIdAsync(Guid eventId, Guid id, bool trackChanges);
 	Task DeleteParticipantAsync(Guid eventId, Guid id, bool trackChanges);
+	Task UpdateParticipantAsync(Guid eventId, Guid id, ParticipantForUpdateRequestDto participant, bool trackChanges);
 }

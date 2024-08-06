@@ -64,4 +64,14 @@ public class ParticipantController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateParticipant(Guid eventId, Guid id, [FromBody] ParticipantForUpdateRequestDto participant)
+    {
+        await _serviceManager
+            .ParticipantService
+            .UpdateParticipantAsync(eventId, id, participant, trackChanges: true);
+
+        return NoContent();
+    }
 }

@@ -5,6 +5,7 @@ using Events.Domain.Exceptions;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
+using FluentValidation;
 
 namespace Events.Application.Services.Implementations;
 
@@ -12,19 +13,32 @@ public class ParticipantService : IParticipantService
 {
 	private readonly IRepositoryManager _repositoryManager;
 	private readonly IMapper _mapper;
+	private readonly IValidator<ParticipantForCreateRequestDto> _createValidator;
+	private readonly IValidator<ParticipantForUpdateRequestDto> _updateValidator;
     public ParticipantService(
-		IRepositoryManager repositoryManager, 
-		IMapper mapper)
-    {
-        _repositoryManager = repositoryManager;
+		IRepositoryManager repositoryManager,
+		IMapper mapper,
+		IValidator<ParticipantForUpdateRequestDto> updateValidator,
+		IValidator<ParticipantForCreateRequestDto> createValidator)
+	{
+		_repositoryManager = repositoryManager;
 		_mapper = mapper;
-    }
-    public async Task<ParticipantResponseDto> CreateParticipantAsync(
+		_updateValidator = updateValidator;
+		_createValidator = createValidator;
+	}
+	public async Task<ParticipantResponseDto> CreateParticipantAsync(
 		Guid eventId, 
 		Guid userId,
 		ParticipantForCreateRequestDto participant, 
 		bool trackChanges)
 	{
+		var validationResult = await _createValidator.ValidateAsync(participant);
+
+		if (!validationResult.IsValid)
+		{
+			throw new BadRequestException("Request model is invalid");
+		}
+
 		var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
 		var userModel = await GetUserByIdAndCheckIfExistAsync(userId, trackChanges);
 
@@ -70,6 +84,28 @@ public class ParticipantService : IParticipantService
 		var participantResponse = _mapper.Map<ParticipantResponseDto>(participantModel);
 
 		return participantResponse;
+	}
+
+	public async Task UpdateParticipantAsync(
+		Guid eventId,
+		Guid id, 
+		ParticipantForUpdateRequestDto participant, 
+		bool trackChanges)
+	{
+		var validationResult = await _updateValidator.ValidateAsync(participant);
+		
+		if (!validationResult.IsValid)
+		{
+			throw new BadRequestException("Request model is invalid");
+		}
+
+		var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
+
+		var participantModel = await _repositoryManager.Participant.GetByIdAsync(eventId, id, trackChanges);
+
+		participantModel = _mapper.Map(participant, participantModel);
+
+		await _repositoryManager.SaveAsync();
 	}
 
 	private async Task<Event> GetEventByIdAndCheckIfExistAsync(Guid eventId, bool trackChanges)
