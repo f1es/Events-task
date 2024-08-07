@@ -1,7 +1,10 @@
 ﻿using Events.Application.Repositories.Interfaces;
 using Events.Domain.Models;
+using Events.Domain.Shared;
+using Events.Domain.Shared.Filters;
 using Events.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Events.Infrastructure.Repositories.Implementations;
 
@@ -13,9 +16,57 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
         
     }
 
-	public async Task<IEnumerable<Event>> GetAllAsync(bool trackChanges) =>
-		await GetAll(trackChanges)
-		.ToListAsync();
+	public async Task<IEnumerable<Event>> GetAllAsync(
+		EventFilter eventFilter, 
+		Paging paging,
+		bool trackChanges)
+	{
+		var eventsQuery = GetAll(trackChanges);
+
+		eventsQuery = SearchByName(eventsQuery, eventFilter.Search);
+
+		eventsQuery = Sort(eventsQuery, eventFilter.SortItem, eventFilter.SortOrder);
+
+		eventsQuery = Paginate(eventsQuery, paging.Page, paging.PageSize);
+
+		return await eventsQuery.ToListAsync();
+	}
+	private IQueryable<Event> SearchByName(IQueryable<Event> events, string? name)
+	{
+		events = events.Where(s => string.IsNullOrEmpty(name) ||
+			s.Name.ToLower().Contains(name.ToLower()));
+
+		return events;
+	}
+	private IQueryable<Event> Paginate(IQueryable<Event> events, int page, int pageSize)
+	{
+		events = events
+			.Skip((page - 1) * pageSize)
+			.Take(pageSize);
+
+		return events;
+	}
+	private IQueryable<Event> Sort(IQueryable<Event> events, string? sortItem, string? sortOrder)
+	{
+		if (sortOrder == "desc")
+			events = events.OrderByDescending(GetKeySelector(sortItem));
+		else
+			events = events.OrderBy(GetKeySelector(sortItem));
+
+		return events;
+	}
+	private Expression<Func<Event, object>> GetKeySelector(string? sortItem)
+	{
+		Expression<Func<Event, object>> keySelector = sortItem switch
+		{
+			"date" => e => e.Date,
+			"name" => e => e.Name,
+			"category" => e => e.Category,
+			_ => e => e.Id
+		};
+
+		return keySelector;
+	}
 
 	public async Task<Event> GetByIdAsync(Guid id, bool trackChanges) =>
 		await GetByPredicate(e => e.Id.Equals(id), trackChanges)

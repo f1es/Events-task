@@ -5,9 +5,12 @@ using Events.Application.Services.Interfaces;
 using Events.Application.Validators;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
+using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
+using Events.Domain.Shared.Filters;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Events.Application.Services.Implementations;
 
@@ -56,9 +59,9 @@ public class EventService : IEventService
 		await _repositoryManager.SaveAsync();
 	}
 
-	public async Task<IEnumerable<EventResponseDto>> GetAllEventsAsync(bool trackChanges)
+	public async Task<IEnumerable<EventResponseDto>> GetAllEventsAsync(EventFilter eventFilter, Paging paging, bool trackChanges)
 	{
-		var events = await _repositoryManager.Event.GetAllAsync(trackChanges);
+		var events = await _repositoryManager.Event.GetAllAsync(eventFilter, paging, trackChanges);
 
 		var eventResponse = _mapper.Map<IEnumerable<EventResponseDto>>(events);
 

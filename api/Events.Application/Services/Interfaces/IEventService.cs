@@ -1,11 +1,13 @@
-﻿using Events.Domain.Shared.DTO.Request;
+﻿using Events.Domain.Shared;
+using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
+using Events.Domain.Shared.Filters;
 
 namespace Events.Application.Services.Interfaces;
 
 public interface IEventService
 {
-	Task<IEnumerable<EventResponseDto>> GetAllEventsAsync(bool trackChanges);
+	Task<IEnumerable<EventResponseDto>> GetAllEventsAsync(EventFilter eventFilter, Paging paging, bool trackChanges);
 	Task<EventResponseDto> GetEventByIdAsync(Guid id, bool trackChanges);
 	Task<EventResponseDto> GetEventByNameAsync(string name, bool trackChanges);
 	Task<EventResponseDto> CreateEventAsync(EventForCreateRequestDto eventDto);

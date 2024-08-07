@@ -1,5 +1,7 @@
 ﻿using Events.Application.Services.Interfaces;
+using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
+using Events.Domain.Shared.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +20,9 @@ public class EventsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetEvents()
+    public async Task<IActionResult> GetEvents([FromQuery] EventFilter eventFilter, [FromQuery] Paging paging)
     {
-        var events = await _serviceManager.EventService.GetAllEventsAsync(trackChanges: false);
+        var events = await _serviceManager.EventService.GetAllEventsAsync(eventFilter, paging, trackChanges: false);
 
         return Ok(events);
     }
