@@ -4,6 +4,7 @@ using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
+using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
 using FluentValidation;
@@ -65,11 +66,11 @@ public class ParticipantService : IParticipantService
 		await _repositoryManager.SaveAsync();
 	}
 
-	public async Task<IEnumerable<ParticipantResponseDto>> GetAllParticipantsAsync(Guid eventId, bool trackChanges)
+	public async Task<IEnumerable<ParticipantResponseDto>> GetAllParticipantsAsync(Guid eventId, Paging paging, bool trackChanges)
 	{
 		var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
 
-		var participantsModels = await _repositoryManager.Participant.GetAllAsync(eventId, trackChanges);
+		var participantsModels = await _repositoryManager.Participant.GetAllAsync(eventId, paging, trackChanges);
 
 		var participantsResponses = _mapper.Map<IEnumerable<ParticipantResponseDto>>(participantsModels);
 

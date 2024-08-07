@@ -1,8 +1,8 @@
 ﻿using Events.Application.Services.Interfaces;
+using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace Events.API.Controllers;
 
@@ -19,11 +19,11 @@ public class ParticipantController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetParticipants(Guid eventId)
+    public async Task<IActionResult> GetParticipants(Guid eventId, [FromQuery] Paging paging)
 	{
         var participants = await _serviceManager
             .ParticipantService
-            .GetAllParticipantsAsync(eventId, trackChanges: false);
+            .GetAllParticipantsAsync(eventId, paging, trackChanges: false);
         
         return Ok(participants);
 	}

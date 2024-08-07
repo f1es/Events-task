@@ -1,4 +1,5 @@
-﻿using Events.Domain.Shared.DTO.Request;
+﻿using Events.Domain.Shared;
+using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
 
 namespace Events.Application.Services.Interfaces;
@@ -10,8 +11,12 @@ public interface IParticipantService
 		Guid userId, 
 		ParticipantForCreateRequestDto participant, 
 		bool trackChanges);
-	Task<IEnumerable<ParticipantResponseDto>> GetAllParticipantsAsync(Guid eventId, bool trackChanges);
+	Task<IEnumerable<ParticipantResponseDto>> GetAllParticipantsAsync(Guid eventId, Paging paging, bool trackChanges);
 	Task<ParticipantResponseDto> GetParticipantByIdAsync(Guid eventId, Guid id, bool trackChanges);
 	Task DeleteParticipantAsync(Guid eventId, Guid id, bool trackChanges);
-	Task UpdateParticipantAsync(Guid eventId, Guid id, ParticipantForUpdateRequestDto participant, bool trackChanges);
+	Task UpdateParticipantAsync(
+		Guid eventId, 
+		Guid id,
+		ParticipantForUpdateRequestDto participant, 
+		bool trackChanges);
 }
