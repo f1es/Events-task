@@ -12,7 +12,7 @@ public class EventForCreateRequestDtoValidation : AbstractValidator<EventForCrea
             .NotEmpty();
 
         RuleFor(e => e.Description)
-            .MinimumLength(500);
+            .MaximumLength(500);
 
         RuleFor(e => e.Date)
             .NotEmpty();

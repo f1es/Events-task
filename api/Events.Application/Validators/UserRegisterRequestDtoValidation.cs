@@ -15,5 +15,9 @@ public class UserRegisterRequestDtoValidation : AbstractValidator<UserRegisterRe
             .MinimumLength(6).WithMessage("Password length must be at least 6 characters")
             .MinimumLength(50).WithMessage("Password length must be less than 50 characters")
             .NotEmpty();
+
+        RuleFor(u => u.Email)
+            .EmailAddress()
+            .NotEmpty();
     }
 }

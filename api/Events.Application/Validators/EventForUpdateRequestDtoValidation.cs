@@ -8,11 +8,11 @@ public class EventForUpdateRequestDtoValidation : AbstractValidator<EventForUpda
     public EventForUpdateRequestDtoValidation()
     {
 		RuleFor(e => e.Name)
-			.NotEmpty()
-			.MaximumLength(250);
+			.MaximumLength(250)
+			.NotEmpty();
 
 		RuleFor(e => e.Description)
-			.MinimumLength(500);
+			.MaximumLength(500);
 
 		RuleFor(e => e.Date)
 			.NotEmpty();
