@@ -19,5 +19,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
 		builder.Property(u => u.PasswordHash)
 			.IsRequired();
+
+		builder.HasOne(u => u.RefreshToken)
+			.WithOne(rt => rt.User)
+			.HasForeignKey<RefreshToken>(rt => rt.UserId)
+			.IsRequired();
 	}
 }
