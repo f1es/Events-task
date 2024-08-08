@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Events.Application.JWT.Implementations;
 using Events.Application.JWT.Interfaces;
+using Events.Application.Options;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
 using Events.Domain.Shared.DTO.Request;
@@ -16,7 +17,9 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IParticipantService> _participantService;
     private readonly Lazy<IImageService> _imageService;
     private readonly Lazy<IUserService> _userService;
+    private readonly Lazy<IRefreshTokenService> _refreshTokenService;
     private readonly Lazy<IJwtProvider> _jwtProvider;
+    private readonly Lazy<IRefreshProvider> _refreshProvider;
     private readonly Lazy<IPasswordHasher> _passwordHasher;
     public ServiceManager(
         IRepositoryManager repositoryManager,
@@ -44,8 +47,14 @@ public class ServiceManager : IServiceManager
         participantForUpdateValidator,
         participantCreateValidator));
 
+        _refreshTokenService = new Lazy<IRefreshTokenService> (() =>
+        new RefreshTokenService(repositoryManager, RefreshProvider, mapper));
+
         _imageService = new Lazy<IImageService>(() =>
         new ImageService(repositoryManager, mapper, imageValidator));
+
+        _refreshProvider = new Lazy<IRefreshProvider>(() =>
+        new RefreshProvider());
 
         _jwtProvider = new Lazy<IJwtProvider>(() =>
         new JwtProvider(jwtOptions));
@@ -59,6 +68,8 @@ public class ServiceManager : IServiceManager
             PasswordHasher, 
             mapper, 
             JwtProvider,
+            RefreshProvider,
+            RefreshTokenService,
             userLoginValidator,
             userRegisterValidator));
     }
@@ -67,6 +78,8 @@ public class ServiceManager : IServiceManager
 	public IParticipantService ParticipantService => _participantService.Value;
 	public IImageService ImageService => _imageService.Value;
 	public IUserService UserService => _userService.Value;
+    public IRefreshTokenService RefreshTokenService => _refreshTokenService.Value;
     public IJwtProvider JwtProvider => _jwtProvider.Value;
+    public IRefreshProvider RefreshProvider => _refreshProvider.Value;
     public IPasswordHasher PasswordHasher => _passwordHasher.Value;
 }
