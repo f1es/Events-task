@@ -1,4 +1,5 @@
 ﻿using Events.Application.JWT.Interfaces;
+using Events.Application.Options;
 using Events.Domain.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -23,14 +24,14 @@ public class JwtProvider : IJwtProvider
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key)),
             SecurityAlgorithms.HmacSha256);
 
-        var tocken = new JwtSecurityToken(
+        var token = new JwtSecurityToken(
             claims: claims,
             signingCredentials: signingCredentials,
             expires: DateTime.UtcNow.AddHours(_jwtOptions.ExpiresHours));
 
-        var tockenValue = new JwtSecurityTokenHandler().WriteToken(tocken);
+        var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
-        return tockenValue;
+        return tokenValue;
     }
 
     public Guid GetUserId(string token)

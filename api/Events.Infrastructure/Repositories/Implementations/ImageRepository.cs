@@ -8,11 +8,10 @@ namespace Events.Infrastructure.Repositories.Implementations;
 
 public class ImageRepository : BaseRepository<Image>, IImageRepository
 {
-	private readonly EventsDBContext _eventsDBContext;
     public ImageRepository(EventsDBContext eventsDBContext)
 		:base(eventsDBContext)
     {
-        _eventsDBContext = eventsDBContext;
+
     }
 
 	public void CreateImage(Guid eventId, Image image)

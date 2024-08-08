@@ -1,10 +1,10 @@
 using Events.API.Extensions;
 using Events.Infrastructure.Extensions;
-using Events.Application.JWT.Implementations;
 using Events.Infrastructure.Context;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Events.Application.Extensions;
+using Events.Application.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 

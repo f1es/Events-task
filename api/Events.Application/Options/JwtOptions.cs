@@ -1,4 +1,4 @@
-﻿namespace Events.Application.JWT.Implementations;
+﻿namespace Events.Application.Options;
 
 public class JwtOptions
 {

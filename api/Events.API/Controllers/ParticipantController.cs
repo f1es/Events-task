@@ -20,18 +20,18 @@ public class ParticipantController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetParticipants(Guid eventId, [FromQuery] Paging paging)
-	{
+    {
         var participants = await _serviceManager
             .ParticipantService
             .GetAllParticipantsAsync(eventId, paging, trackChanges: false);
-        
+
         return Ok(participants);
-	}
+    }
 
     [HttpGet("{id:guid}", Name = "ParticipantById")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<IActionResult> GetParticipant(Guid eventId, Guid id)
+    public async Task<IActionResult> GetParticipant(Guid eventId, Guid id)
     {
         var participant = await _serviceManager
             .ParticipantService
@@ -41,8 +41,8 @@ public class ParticipantController : ControllerBase
     }
 
     [HttpPost]
-	[ProducesResponseType(StatusCodes.Status201Created)]
-	public async Task<IActionResult> CreateParticipant(Guid eventId, [FromBody] ParticipantForCreateRequestDto participant)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<IActionResult> CreateParticipant(Guid eventId, [FromBody] ParticipantForCreateRequestDto participant)
     {
         Request.Cookies.TryGetValue("cook", out string? token);
         var userId = _serviceManager.JwtProvider.GetUserId(token);
@@ -54,7 +54,7 @@ public class ParticipantController : ControllerBase
         return CreatedAtRoute("ParticipantById", new { eventId, id = participantResponse.Id }, participantResponse);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteParticipant(Guid eventId, Guid id)
     {
@@ -65,7 +65,7 @@ public class ParticipantController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateParticipant(Guid eventId, Guid id, [FromBody] ParticipantForUpdateRequestDto participant)
     {
         await _serviceManager
