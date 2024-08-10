@@ -9,9 +9,11 @@ public class EventsDBContext : DbContext
 {
 	private readonly IConfiguration _configuration;
     public EventsDBContext()
-    { }  
-
-	public EventsDBContext(DbContextOptions<EventsDBContext> options, IConfiguration configuration)
+    { }
+    public EventsDBContext(DbContextOptions<EventsDBContext> options) :
+		base(options)
+    { }
+    public EventsDBContext(DbContextOptions<EventsDBContext> options, IConfiguration configuration)
 	{
 		_configuration = configuration;
 	}

@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.API", "Events.API.csproj", "{F3CFE0D6-A7C3-42A1-9509-5310979DC707}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Events.API", "Events.API.csproj", "{F3CFE0D6-A7C3-42A1-9509-5310979DC707}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Domain", "..\Events.Domain\Events.Domain.csproj", "{95B4C324-7EC7-4804-9581-35CEC228C8DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Events.Domain", "..\Events.Domain\Events.Domain.csproj", "{95B4C324-7EC7-4804-9581-35CEC228C8DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Infrastructure", "..\Events.Infrastructure\Events.Infrastructure.csproj", "{65B1979A-656B-44A5-8514-A17CAC32AAEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Events.Infrastructure", "..\Events.Infrastructure\Events.Infrastructure.csproj", "{65B1979A-656B-44A5-8514-A17CAC32AAEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Application", "..\Events.Application\Events.Application.csproj", "{AF9FCB8B-148E-4A2B-9858-059C191BFB73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Events.Application", "..\Events.Application\Events.Application.csproj", "{AF9FCB8B-148E-4A2B-9858-059C191BFB73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Tests", "..\Events.Tests\Events.Tests.csproj", "{FD41A7C5-622F-47A5-99B7-7723AD870531}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AF9FCB8B-148E-4A2B-9858-059C191BFB73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF9FCB8B-148E-4A2B-9858-059C191BFB73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF9FCB8B-148E-4A2B-9858-059C191BFB73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD41A7C5-622F-47A5-99B7-7723AD870531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD41A7C5-622F-47A5-99B7-7723AD870531}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD41A7C5-622F-47A5-99B7-7723AD870531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD41A7C5-622F-47A5-99B7-7723AD870531}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
