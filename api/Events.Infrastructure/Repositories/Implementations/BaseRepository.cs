@@ -5,29 +5,29 @@ using System.Linq.Expressions;
 
 namespace Events.Infrastructure.Repositories.Implementations;
 
-public abstract class BaseRepository<T> : IRepositoryBase<T> where T : class
+public abstract class BaseRepository<T> where T : class
 {
 	protected readonly EventsDBContext eventsDBContext;
     public BaseRepository(EventsDBContext eventsDBContext)
     {
         this.eventsDBContext = eventsDBContext;
     }
-	public void Create(T entity) =>
+	protected void Create(T entity) =>
 		eventsDBContext
 		.Set<T>()
 		.Add(entity);
 
-	public void Delete(T entity) =>
+	protected void Delete(T entity) =>
 		eventsDBContext
 		.Set<T>()
 		.Remove(entity);
 
-	public void Update(T entity) =>
+	protected void Update(T entity) =>
 		eventsDBContext 
 		.Set<T>()
 		.Update(entity);
 
-	public IQueryable<T> GetAll(bool trackChanges) =>
+	protected IQueryable<T> GetAll(bool trackChanges) =>
 		trackChanges ?
 		eventsDBContext
 		.Set<T>() 
@@ -36,7 +36,7 @@ public abstract class BaseRepository<T> : IRepositoryBase<T> where T : class
 		.Set<T>()
 		.AsNoTracking();
 
-	public IQueryable<T> GetByPredicate(Expression<Func<T, bool>> predicate, bool trackChanges) =>
+	protected IQueryable<T> GetByPredicate(Expression<Func<T, bool>> predicate, bool trackChanges) =>
 		trackChanges ?
 		eventsDBContext 
 		.Set<T>()
