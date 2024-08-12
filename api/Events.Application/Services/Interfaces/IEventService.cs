@@ -9,7 +9,6 @@ public interface IEventService
 {
 	Task<IEnumerable<EventResponseDto>> GetAllEventsAsync(EventFilter eventFilter, Paging paging, bool trackChanges);
 	Task<EventResponseDto> GetEventByIdAsync(Guid id, bool trackChanges);
-	Task<EventResponseDto> GetEventByNameAsync(string name, bool trackChanges);
 	Task<EventResponseDto> CreateEventAsync(EventForCreateRequestDto eventDto);
 	Task UpdateEventAsync(Guid id, EventForUpdateRequestDto eventDto, bool trackChanges);
 	Task DeleteEventAsync(Guid id, bool trackChanges);

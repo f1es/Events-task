@@ -72,10 +72,6 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
 		await GetByPredicate(e => e.Id.Equals(id), trackChanges)
 		.SingleOrDefaultAsync();
 
-	public async Task<Event> GetByNameAsync(string name, bool trackChanges) =>
-		await GetByPredicate(e => e.Name.Equals(name), trackChanges)
-		.SingleOrDefaultAsync();
-
 	public void CreateEvent(Event eventModel) => 
 		Create(eventModel);
 

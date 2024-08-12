@@ -2,7 +2,6 @@
 using Events.Application.Extensions;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.Interfaces;
-using Events.Application.Validators;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
 using Events.Domain.Shared;
@@ -10,7 +9,6 @@ using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
 using Events.Domain.Shared.Filters;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Events.Application.Services.Implementations;
 
@@ -75,20 +73,6 @@ public class EventService : IEventService
 		var eventRsponse = _mapper.Map<EventResponseDto>(eventModel);
 
 		return eventRsponse;
-	}
-
-	public async Task<EventResponseDto> GetEventByNameAsync(string name, bool trackChanges)
-	{
-		var eventModel = await _repositoryManager.Event.GetByNameAsync(name, trackChanges);
-
-		if (eventModel is null)
-		{
-			throw new NotFoundException($"event with name {name} not found");
-		}
-
-		var eventResponse = _mapper.Map<EventResponseDto>(eventModel);
-
-		return eventResponse;
 	}
 
 	public async Task UpdateEventAsync(Guid id, EventForUpdateRequestDto eventDto, bool trackChanges)
