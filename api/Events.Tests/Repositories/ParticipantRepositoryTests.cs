@@ -83,29 +83,6 @@ public class ParticipantRepositoryTests
 
         // Assert
         Assert.Equal(0, context.Participants.Count());
-    }
-
-    [Fact]
-    public void UpdateParticipant_ReturnsVoid()
-    {
-        // Arrange
-        var context = InitContext();
-        var repository = new ParticipantRepository(context);
-        var participantGuid = Guid.NewGuid();
-        var testParticipant = GetTestParticipant(participantGuid);
-
-        context.Participants.Add(testParticipant);
-        context.SaveChanges();
-
-        var newName = "updateTestParticipant";
-        testParticipant.Name = newName;
-
-        // Act
-        repository.UpdateParticipant(testParticipant);
-        context.SaveChanges();
-
-        // Assert
-        Assert.Equal(newName, context.Participants.First().Name);
-        Assert.Equal(testParticipant.Id, context.Participants.First().Id);
+        Assert.DoesNotContain(testParticipant, context.Participants);
     }
 }

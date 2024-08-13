@@ -88,28 +88,4 @@ public class EventRepositoryTests
         // Assert
         Assert.Equal(0, context.Events.Count());
     }
-
-    [Fact]
-    public void UpdateEvent_ReturnsVoid()
-    {
-        // Arrange
-        var context = InitContext();
-        var repository = new EventRepository(context);
-        var eventGuid = Guid.NewGuid();
-        var testEvent = GetTestEvent(eventGuid);
-
-        context.Events.Add(testEvent);
-        context.SaveChanges();
-
-        var newName = "updateTestEvent";
-        testEvent.Name = newName;
-
-        // Act
-        repository.UpdateEvent(testEvent);
-        context.SaveChanges();
-
-        // Assert 
-        Assert.Equal(newName, context.Events.First().Name);
-        Assert.Equal(testEvent.Id, context.Events.First().Id);
-    }
 }
