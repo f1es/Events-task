@@ -1,5 +1,5 @@
-﻿using Events.Application.JWT.Interfaces;
-using Events.Application.Options;
+﻿using Events.Application.Options;
+using Events.Application.Services.SecurityServices.Interfaces;
 using Events.Domain.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Events.Application.JWT.Implementations;
+namespace Events.Application.Services.SecurityServices.Implementations;
 
 public class JwtProvider : IJwtProvider
 {

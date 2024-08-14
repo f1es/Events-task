@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using Events.Application.JWT.Implementations;
-using Events.Application.JWT.Interfaces;
 using Events.Application.Options;
 using Events.Application.Repositories.Interfaces;
-using Events.Application.Services.Interfaces;
+using Events.Application.Services.ModelServices.Interfaces;
+using Events.Application.Services.SecurityServices.Implementations;
+using Events.Application.Services.SecurityServices.Interfaces;
 using Events.Domain.Shared.DTO.Request;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace Events.Application.Services.Implementations;
+namespace Events.Application.Services.ModelServices.Implementations;
 
 public class ServiceManager : IServiceManager
 {
@@ -25,6 +25,7 @@ public class ServiceManager : IServiceManager
         IRepositoryManager repositoryManager,
         IMapper mapper,
         IOptions<JwtOptions> jwtOptions,
+        IOptions<RefreshTokenOptions> refreshTokenOptions,
         IValidator<EventForCreateRequestDto> eventCreateValidator,
         IValidator<EventForUpdateRequestDto> eventUpdateValidator,
         IValidator<ParticipantForCreateRequestDto> participantCreateValidator,
@@ -47,14 +48,14 @@ public class ServiceManager : IServiceManager
         participantForUpdateValidator,
         participantCreateValidator));
 
-        _refreshTokenService = new Lazy<IRefreshTokenService> (() =>
-        new RefreshTokenService(repositoryManager, RefreshProvider, mapper));
+        _refreshTokenService = new Lazy<IRefreshTokenService>(() =>
+        new RefreshTokenService(repositoryManager, RefreshProvider, JwtProvider, mapper));
 
         _imageService = new Lazy<IImageService>(() =>
         new ImageService(repositoryManager, mapper, imageValidator));
 
         _refreshProvider = new Lazy<IRefreshProvider>(() =>
-        new RefreshProvider());
+        new RefreshProvider(refreshTokenOptions));
 
         _jwtProvider = new Lazy<IJwtProvider>(() =>
         new JwtProvider(jwtOptions));
@@ -64,9 +65,9 @@ public class ServiceManager : IServiceManager
 
         _userService = new Lazy<IUserService>(() =>
         new UserService(
-            repositoryManager, 
-            PasswordHasher, 
-            mapper, 
+            repositoryManager,
+            PasswordHasher,
+            mapper,
             JwtProvider,
             RefreshProvider,
             RefreshTokenService,
@@ -75,9 +76,9 @@ public class ServiceManager : IServiceManager
     }
 
     public IEventService EventService => _eventService.Value;
-	public IParticipantService ParticipantService => _participantService.Value;
-	public IImageService ImageService => _imageService.Value;
-	public IUserService UserService => _userService.Value;
+    public IParticipantService ParticipantService => _participantService.Value;
+    public IImageService ImageService => _imageService.Value;
+    public IUserService UserService => _userService.Value;
     public IRefreshTokenService RefreshTokenService => _refreshTokenService.Value;
     public IJwtProvider JwtProvider => _jwtProvider.Value;
     public IRefreshProvider RefreshProvider => _refreshProvider.Value;

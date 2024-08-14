@@ -1,4 +1,4 @@
-﻿namespace Events.Application.JWT.Interfaces;
+﻿namespace Events.Application.Services.SecurityServices.Interfaces;
 
 public interface IPasswordHasher
 {

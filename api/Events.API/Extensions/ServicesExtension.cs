@@ -30,7 +30,7 @@ public static class ServicesExtension
 				{
 					OnMessageReceived = context =>
 					{
-						context.Token = context.Request.Cookies["cook"];
+						context.Token = context.Request.Cookies["acc"];
 
 						return Task.CompletedTask;
 					}

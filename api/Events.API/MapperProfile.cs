@@ -29,5 +29,9 @@ public class MapperProfile : Profile
             .ForMember(i => i.Content, opt => opt.MapFrom(f => f.OpenReadStream().ToByteArray()));
 
         CreateMap<Image, ImageResponseDto>();
+
+        CreateMap<RefreshToken, RefreshToken>()
+            .ForMember(rt => rt.Id, opt => opt.Ignore())
+            .ForMember(rt => rt.UserId, opt => opt.Ignore());
     }
 }

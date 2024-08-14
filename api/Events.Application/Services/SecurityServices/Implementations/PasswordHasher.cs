@@ -1,6 +1,6 @@
-﻿using Events.Application.JWT.Interfaces;
+﻿using Events.Application.Services.SecurityServices.Interfaces;
 
-namespace Events.Application.JWT.Implementations;
+namespace Events.Application.Services.SecurityServices.Implementations;
 
 public class PasswordHasher : IPasswordHasher
 {

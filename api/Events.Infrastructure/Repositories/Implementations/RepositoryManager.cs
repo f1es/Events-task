@@ -1,5 +1,4 @@
 ﻿using Events.Application.Repositories.Interfaces;
-using Events.Domain.Models;
 using Events.Infrastructure.Context;
 
 namespace Events.Infrastructure.Repositories.Implementations;
@@ -11,6 +10,7 @@ public class RepositoryManager : IRepositoryManager
     private Lazy<IEventRepository> _eventRepository;
     private Lazy<IUserRepository> _userRepository;
     private Lazy<IImageRepository> _imageRepository;
+    private Lazy<IRefreshTokenRepository> _refreshTokenRepository;
     public RepositoryManager(EventsDBContext eventsDBContext)
     {
         _eventsDBContext = eventsDBContext;
@@ -26,10 +26,14 @@ public class RepositoryManager : IRepositoryManager
 
         _imageRepository = new Lazy<IImageRepository>(() =>
         new ImageRepository(eventsDBContext));
+
+        _refreshTokenRepository = new Lazy<IRefreshTokenRepository>(() => 
+        new RefreshTokenRepository(eventsDBContext));
     }
     public IParticipantRepository Participant => _participantRepository.Value;
 	public IEventRepository Event => _eventRepository.Value;
     public IUserRepository User => _userRepository.Value;
     public IImageRepository Image => _imageRepository.Value;
+    public IRefreshTokenRepository RefreshToken => _refreshTokenRepository.Value;
     public async Task SaveAsync() => await _eventsDBContext.SaveChangesAsync();
 }

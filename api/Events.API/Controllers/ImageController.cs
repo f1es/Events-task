@@ -1,4 +1,4 @@
-﻿using Events.Application.Services.Interfaces;
+﻿using Events.Application.Services.ModelServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers;

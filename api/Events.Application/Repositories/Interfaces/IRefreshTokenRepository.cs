@@ -4,7 +4,8 @@ namespace Events.Application.Repositories.Interfaces;
 
 public interface IRefreshTokenRepository
 {
-	Task<RefreshToken> GetRefreshTokenAsync(Guid userId, bool trackChanges);
+	Task<RefreshToken> GetRefreshTokenByUserIdAsync(Guid userId, bool trackChanges);
 	void CreateRefreshToken(RefreshToken refreshToken);
 	void DeleteRefreshToken(RefreshToken refreshToken);
+	Task<RefreshToken> GetRefreshTokenByValueAsync(string refreshTokenValue, bool trackChanges);
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using Events.Application.Validators;
-using Events.Application.Services.Implementations;
-using Events.Application.Services.Interfaces;
+using Events.Application.Services.ModelServices.Implementations;
+using Events.Application.Services.ModelServices.Interfaces;
 
 namespace Events.Application.Extensions;
 

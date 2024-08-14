@@ -1,4 +1,5 @@
-﻿using Events.Application.Services.Interfaces;
+﻿using Events.Application.Extensions;
+using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,10 +26,28 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> LoginUser([FromBody] UserLoginRequestDto user)
     {
-        var token = await _serviceManager.UserService.LoginUserAsync(user, trackChanges: false);
+        var tokens = await _serviceManager.UserService.LoginUserAsync(
+            user, 
+            trackUsernameChanges: false,
+            trackRefreshTokenChanges: true);
 
-        Response.Cookies.Append("cook", token);
+        Response.AppendAccessToken(tokens.accessToken);
+        Response.AppendRefreshToken(tokens.refreshToken);
 
-        return Ok();
+		return Ok();
+    }
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh()
+    {
+        var refreshTokenValue = Request.GetRefreshToken();
+
+        var tokens = await _serviceManager
+            .RefreshTokenService
+            .RefreshTokensFromTokenValue(refreshTokenValue, trackChanges: true);
+
+        Response.AppendAccessToken(tokens.accessToken);
+        Response.AppendRefreshToken(tokens.refreshToken);
+
+		return Ok();
     }
 }

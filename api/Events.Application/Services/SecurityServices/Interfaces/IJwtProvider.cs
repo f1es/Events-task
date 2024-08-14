@@ -1,6 +1,6 @@
 ﻿using Events.Domain.Models;
 
-namespace Events.Application.JWT.Interfaces;
+namespace Events.Application.Services.SecurityServices.Interfaces;
 
 public interface IJwtProvider
 {

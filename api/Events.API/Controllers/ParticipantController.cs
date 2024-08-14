@@ -1,4 +1,4 @@
-﻿using Events.Application.Services.Interfaces;
+﻿using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
