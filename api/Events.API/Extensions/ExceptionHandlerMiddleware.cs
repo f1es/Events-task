@@ -47,6 +47,7 @@ public class ExceptionHandlerMiddleware
 			FailedToLoginException => HttpStatusCode.Unauthorized,
 			BadRequestException => HttpStatusCode.BadRequest,
 			InvalidModelException => HttpStatusCode.BadRequest,
+			InvalidRefreshTokenException => HttpStatusCode.Unauthorized,
 			_ => HttpStatusCode.InternalServerError
 		};
 }
