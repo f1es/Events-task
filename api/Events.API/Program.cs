@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+builder.Services.Configure<RefreshTokenOptions>(builder.Configuration.GetSection(nameof(RefreshTokenOptions)));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
