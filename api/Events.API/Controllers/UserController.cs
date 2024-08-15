@@ -1,7 +1,10 @@
-﻿using Events.Application.Extensions;
+﻿using Events.API.Attributes;
+using Events.API.Extensions;
+using Events.Application.Extensions;
 using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Events.API.Controllers;
 
@@ -37,7 +40,7 @@ public class UserController : ControllerBase
 		return Ok();
     }
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh()
+    public async Task<IActionResult> RefreshUserTokens()
     {
         var refreshTokenValue = Request.GetRefreshToken();
 
@@ -49,5 +52,16 @@ public class UserController : ControllerBase
         Response.AppendRefreshToken(tokens.refreshToken);
 
 		return Ok();
+    }
+	[HttpPost("grant-role")]
+	[RequiredRole("admin")]
+    public async Task<IActionResult> GrantRoleForUser([FromBody] GrantRoleDto grantRole)
+    {
+        await _serviceManager.UserService.GrantRole(
+            grantRole.UserId, 
+            grantRole.Role, 
+            trackChanges: true);
+
+        return Ok();
     }
 }
