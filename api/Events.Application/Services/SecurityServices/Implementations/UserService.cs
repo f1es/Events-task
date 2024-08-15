@@ -2,6 +2,7 @@
 using Events.Application.Extensions;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.SecurityServices.Interfaces;
+using Events.Domain.Enums;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
@@ -92,11 +93,45 @@ public class UserService : IUserService
         var userModel = _mapper.Map<User>(user);
 
         userModel.PasswordHash = passwordHash;
+        
+        userModel.Role = Roles.user.ToString();
 
         _repositoryManager.User.CreateUser(userModel);
         await _refreshTokenService.CreateRefreshTokenAsync(userModel.Id);
 
         await _repositoryManager.SaveAsync();
+    }
+
+    public async Task GrantRole(Guid id, string role, bool trackChanges)
+    {
+		var user = await _repositoryManager.User.GetByIdAsync(id, trackChanges);
+		if (user is null)
+		{
+			throw new NotFoundException($"user with id {id} not found");
+		}
+
+        var verifiedRole = GetRoleIfExist(role);
+
+        user.Role = verifiedRole;
+
+        await _repositoryManager.SaveAsync();
+	}
+
+    private string GetRoleIfExist(string role)
+    {
+        role = role.ToLower();
+
+        switch(role)
+        {
+            case nameof(Roles.admin):
+                return Roles.admin.ToString();
+            case nameof(Roles.user): 
+                return Roles.user.ToString();
+            case nameof(Roles.manager): 
+                return Roles.manager.ToString();
+            default:
+                throw new BadRequestException($"Role {role} doesn't exist");
+        }
     }
 
     public async Task<User> GetByIdAsync(Guid id, bool trackChanges)
