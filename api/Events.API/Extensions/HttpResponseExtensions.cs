@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace Events.Application.Extensions;
+namespace Events.API.Extensions;
 
 public static class HttpResponseExtensions
 {
@@ -14,7 +14,7 @@ public static class HttpResponseExtensions
 			Expires = refreshToken.Expires,
 		};
 
-		response.Cookies.Append("ref", refreshToken.Token);
+		response.Cookies.Append("ref", refreshToken.Token, cookieOptions);
 	}
 
 	public static void AppendAccessToken(this HttpResponse response, string accessToken)
