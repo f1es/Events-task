@@ -1,10 +1,12 @@
 ﻿using Events.Application.Services.ModelServices.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers;
 
 [ApiController]
 [Route("api/events/{eventId:guid}/image")]
+[Authorize]
 public class ImageController : ControllerBase
 {
 	private readonly IServiceManager _serviceManager;

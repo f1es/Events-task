@@ -5,5 +5,5 @@ namespace Events.Application.Services.SecurityServices.Interfaces;
 public interface IJwtProvider
 {
     string GenerateToken(User user);
-    Guid GetUserId(string token);
+	Guid GetUserId(string token);
 }
