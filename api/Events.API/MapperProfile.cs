@@ -23,6 +23,8 @@ public class MapperProfile : Profile
         CreateMap<UserRegisterRequestDto, User>()
             .ForMember(u => u.PasswordHash, opt => opt.Ignore());
 
+        CreateMap<User, UserResponseDto>();
+
         CreateMap<IFormFile, Image>()
             .ForMember(i => i.Name, opt => opt.MapFrom(f => f.FileName))
             .ForMember(i => i.Type, opt => opt.MapFrom(f => f.ContentType))

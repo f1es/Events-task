@@ -2,6 +2,7 @@
 using Events.Domain.Models;
 using Events.Domain.Shared;
 using Events.Infrastructure.Context;
+using Events.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Events.Infrastructure.Repositories.Implementations;
@@ -18,20 +19,11 @@ public class ParticipantRepository : BaseRepository<Participant>, IParticipantRe
 	{
 		var participantsQuery = GetByPredicate(p => p.EventId.Equals(eventId), trackChanges);
 
-		participantsQuery = Paginate(participantsQuery, paging.Page, paging.PageSize);
+		participantsQuery = participantsQuery.Paginate(paging.Page, paging.PageSize);
 
-		participantsQuery.OrderBy(p => p.Name);
+		participantsQuery = participantsQuery.OrderBy(p => p.Name);
 
 		return await participantsQuery.ToListAsync();
-	}
-
-	private IQueryable<Participant> Paginate(IQueryable<Participant> participants, int page, int pageSize)
-	{
-		participants = participants
-		.Skip((page - 1) * pageSize)
-		.Take(pageSize);
-
-		return participants;
 	}
 
 	public async Task<Participant> GetByIdAsync(Guid id, bool trackChanges) => 

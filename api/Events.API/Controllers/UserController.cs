@@ -2,6 +2,7 @@
 using Events.API.Extensions;
 using Events.Application.Extensions;
 using Events.Application.Services.ModelServices.Interfaces;
+using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -19,7 +20,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterUser([FromBody] UserRegisterRequestDto user)
+	[ProducesResponseType(StatusCodes.Status201Created)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status409Conflict)]
+
+	public async Task<IActionResult> RegisterUser([FromBody] UserRegisterRequestDto user)
     {
         await _serviceManager.UserService.RegisterUserAsync(user, trackChanges: false);
 
@@ -27,7 +32,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginUser([FromBody] UserLoginRequestDto user)
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	public async Task<IActionResult> LoginUser([FromBody] UserLoginRequestDto user)
     {
         var tokens = await _serviceManager.UserService.LoginUserAsync(
             user, 
@@ -40,7 +47,9 @@ public class UserController : ControllerBase
 		return Ok();
     }
     [HttpPost("refresh")]
-    public async Task<IActionResult> RefreshUserTokens()
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	public async Task<IActionResult> RefreshUserTokens()
     {
         var refreshTokenValue = Request.GetRefreshToken();
 
@@ -53,15 +62,36 @@ public class UserController : ControllerBase
 
 		return Ok();
     }
+
 	[HttpPost("grant-role")]
-	[RequiredRole("admin")]
-    public async Task<IActionResult> GrantRoleForUser([FromBody] GrantRoleDto grantRole)
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> GrantRoleForUser([FromBody] GrantRoleDto grantRole)
     {
-        await _serviceManager.UserService.GrantRole(
+        await _serviceManager.UserService.GrantRoleForUser(
             grantRole.UserId, 
             grantRole.Role, 
             trackChanges: true);
 
         return Ok();
+    }
+    [HttpGet("{id:guid}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> GetUser(Guid id)
+    {
+        var user = await _serviceManager.UserService.GetUserByIdAsync(id, trackChanges: false);
+
+        return Ok(user);
+    }
+    [HttpGet]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IActionResult> GetUsers([FromQuery] Paging paging)
+    {
+        var users = await _serviceManager.UserService.GetAllUsersAsync(paging, trackChanges: false);
+
+        return Ok(users);
     }
 }

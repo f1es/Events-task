@@ -5,7 +5,9 @@ using Events.Application.Services.SecurityServices.Interfaces;
 using Events.Domain.Enums;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
+using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
+using Events.Domain.Shared.DTO.Response;
 using FluentValidation;
 
 namespace Events.Application.Services.SecurityServices.Implementations;
@@ -102,7 +104,7 @@ public class UserService : IUserService
         await _repositoryManager.SaveAsync();
     }
 
-    public async Task GrantRole(Guid id, string role, bool trackChanges)
+    public async Task GrantRoleForUser(Guid id, string role, bool trackChanges)
     {
 		var user = await _repositoryManager.User.GetByIdAsync(id, trackChanges);
 		if (user is null)
@@ -134,7 +136,7 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<User> GetByIdAsync(Guid id, bool trackChanges)
+    public async Task<UserResponseDto> GetUserByIdAsync(Guid id, bool trackChanges)
     {
         var user = await _repositoryManager.User.GetByIdAsync(id, trackChanges);
         if (user is null)
@@ -142,6 +144,17 @@ public class UserService : IUserService
             throw new NotFoundException($"user with id {id} not found");
         }
 
-        return user;
+        var userResponse = _mapper.Map<UserResponseDto>(user);
+
+        return userResponse;
+    }
+
+    public async Task<IEnumerable<UserResponseDto>> GetAllUsersAsync(Paging paging, bool trackChanges)
+    {
+        var users = await _repositoryManager.User.GetAllAsync(paging, trackChanges);
+
+        var usersResponse = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+
+        return usersResponse;
     }
 }

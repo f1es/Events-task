@@ -3,6 +3,7 @@ using Events.Domain.Models;
 using Events.Domain.Shared;
 using Events.Domain.Shared.Filters;
 using Events.Infrastructure.Context;
+using Events.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -27,7 +28,7 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
 
 		eventsQuery = Sort(eventsQuery, eventFilter.SortItem, eventFilter.SortOrder);
 
-		eventsQuery = Paginate(eventsQuery, paging.Page, paging.PageSize);
+		eventsQuery = eventsQuery.Paginate(paging.Page, paging.PageSize);
 
 		return await eventsQuery.ToListAsync();
 	}
@@ -35,14 +36,6 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
 	{
 		events = events.Where(s => string.IsNullOrEmpty(name) ||
 			s.Name.ToLower().Contains(name.ToLower()));
-
-		return events;
-	}
-	private IQueryable<Event> Paginate(IQueryable<Event> events, int page, int pageSize)
-	{
-		events = events
-			.Skip((page - 1) * pageSize)
-			.Take(pageSize);
 
 		return events;
 	}

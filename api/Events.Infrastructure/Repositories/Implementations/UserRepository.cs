@@ -1,6 +1,8 @@
 ﻿using Events.Application.Repositories.Interfaces;
 using Events.Domain.Models;
+using Events.Domain.Shared;
 using Events.Infrastructure.Context;
+using Events.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Events.Infrastructure.Repositories.Implementations;
@@ -13,6 +15,16 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         _eventsDBContext = eventsDBContext;
     }
+
+	public async Task<IEnumerable<User>> GetAllAsync(Paging paging, bool trackChanges)
+	{
+		var usersQuery = GetAll(trackChanges);
+		
+		usersQuery = usersQuery.Paginate(paging.Page, paging.PageSize);
+
+		return await usersQuery.ToListAsync();
+	}
+
 	public async Task<User> GetByIdAsync(Guid id, bool trackChanges) =>
 		await GetByPredicate(u => u.Id.Equals(id), trackChanges)
 		.SingleOrDefaultAsync();
@@ -26,7 +38,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
 	public void DeleteUser(User user) => 
 		Delete(user);
-
 
 	public void UpdateUser(User user) => 
 		Update(user);
