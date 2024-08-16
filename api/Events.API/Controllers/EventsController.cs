@@ -22,6 +22,8 @@ public class EventsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	public async Task<IActionResult> GetEvents([FromQuery] EventFilter eventFilter, [FromQuery] Paging paging)
     {
         var events = await _serviceManager.EventService.GetAllEventsAsync(eventFilter, paging, trackChanges: false);
@@ -31,6 +33,7 @@ public class EventsController : ControllerBase
 
     [HttpGet("{id:guid}", Name = "EventById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GetEvent(Guid id)
     {
@@ -40,8 +43,11 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
     [RequiredRole("Admin, Manager")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateEvent([FromBody] EventForCreateRequestDto eventModel)
     {
         var eventResponse = await _serviceManager.EventService.CreateEventAsync(eventModel);
@@ -50,8 +56,11 @@ public class EventsController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
 	[RequiredRole("Admin, Manager")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventForUpdateRequestDto eventModel)
     {
         await _serviceManager.EventService.UpdateEventAsync(id, eventModel, trackChanges: true);
@@ -60,8 +69,10 @@ public class EventsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[RequiredRole("Admin, Manager")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> DeleteEvent(Guid id)
     {
         await _serviceManager.EventService.DeleteEventAsync(id, trackChanges: false);

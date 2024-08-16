@@ -10,7 +10,6 @@ namespace Events.API.Controllers;
 [ApiController]
 [Route("api/{eventId:guid}/participants")]
 [Authorize]
-[RequiredRole("Admin, Manager")]
 public class ParticipantController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -20,8 +19,12 @@ public class ParticipantController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetParticipants(Guid eventId, [FromQuery] Paging paging)
+	[RequiredRole("Admin, Manager")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	public async Task<IActionResult> GetParticipants(Guid eventId, [FromQuery] Paging paging)
     {
         var participants = await _serviceManager
             .ParticipantService
@@ -31,8 +34,11 @@ public class ParticipantController : ControllerBase
     }
 
     [HttpGet("{id:guid}", Name = "ParticipantById")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+	[RequiredRole("Admin, Manager")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetParticipant(Guid eventId, Guid id)
     {
         var participant = await _serviceManager
@@ -44,9 +50,11 @@ public class ParticipantController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateParticipant(Guid eventId, [FromBody] ParticipantForCreateRequestDto participant)
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	public async Task<IActionResult> CreateParticipant(Guid eventId, [FromBody] ParticipantForCreateRequestDto participant)
     {
-        Request.Cookies.TryGetValue("cook", out string? token);
+        Request.Cookies.TryGetValue("acc", out string? token);
         var userId = _serviceManager.JwtProvider.GetUserId(token);
 
         var participantResponse = await _serviceManager
@@ -57,8 +65,11 @@ public class ParticipantController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteParticipant(Guid eventId, Guid id)
+	[RequiredRole("Admin, Manager")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	public async Task<IActionResult> DeleteParticipant(Guid eventId, Guid id)
     {
         await _serviceManager
             .ParticipantService
@@ -68,7 +79,12 @@ public class ParticipantController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateParticipant(Guid eventId, Guid id, [FromBody] ParticipantForUpdateRequestDto participant)
+	[RequiredRole("Admin, Manager")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	public async Task<IActionResult> UpdateParticipant(Guid eventId, Guid id, [FromBody] ParticipantForUpdateRequestDto participant)
     {
         await _serviceManager
             .ParticipantService

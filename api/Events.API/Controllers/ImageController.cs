@@ -1,4 +1,5 @@
-﻿using Events.Application.Services.ModelServices.Interfaces;
+﻿using Events.API.Attributes;
+using Events.Application.Services.ModelServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,11 @@ public class ImageController : ControllerBase
         _serviceManager = serviceManager;
     }
     [HttpPost]
+	[RequiredRole("Admin, Manager")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> UploadImage(Guid eventId,  IFormFile image)
 	{
 		await _serviceManager.ImageService.UploadImageAsync(eventId, image, trackChanges: false);
@@ -23,6 +29,9 @@ public class ImageController : ControllerBase
 	}
 
 	[HttpGet]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GetImage(Guid eventId)
 	{
 		var image = await _serviceManager.ImageService.GetImageAsync(eventId, trackChanges: false);
@@ -30,6 +39,11 @@ public class ImageController : ControllerBase
 		return File(image.Content, image.Type);
 	}
 	[HttpPut]
+	[RequiredRole("Admin, Manager")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> UpdateImage(Guid eventId, IFormFile image)
 	{
 		await _serviceManager.ImageService.UpdateImageAsync(eventId, image, trackChanges: true);
