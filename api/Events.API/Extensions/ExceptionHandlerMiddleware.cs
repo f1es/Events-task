@@ -42,7 +42,7 @@ public class ExceptionHandlerMiddleware
     private HttpStatusCode GetStatusCode(Exception exception) =>
 		exception switch
 		{
-			AlreadyExistException => HttpStatusCode.Forbidden,
+			AlreadyExistException => HttpStatusCode.Conflict,
 			NotFoundException => HttpStatusCode.NotFound,
 			FailedToLoginException => HttpStatusCode.Unauthorized,
 			BadRequestException => HttpStatusCode.BadRequest,
