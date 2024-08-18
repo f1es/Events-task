@@ -42,9 +42,10 @@ public class ImageServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = false;
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(eventId, false))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
         var image = new Image
@@ -63,14 +64,14 @@ public class ImageServiceTests
             .Returns(It.IsAny<ImageResponseDto>());
 
         // Act
-        await _imageService.UploadImageAsync(eventId, It.IsAny<IFormFile>(), false);
+        await _imageService.UploadImageAsync(eventId, It.IsAny<IFormFile>(), trackChanges);
 
         // Assert
         _validatorMock.Verify(v =>
         v.Validate(It.IsAny<IFormFile>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, false), Times.Once);
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<Image>(It.IsAny<IFormFile>()), Times.Once);
@@ -91,9 +92,10 @@ public class ImageServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = false;
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(eventId, false))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
         var imageId = Guid.NewGuid();
@@ -103,7 +105,7 @@ public class ImageServiceTests
         };
 
         _repositoryManagerMock.Setup(r =>
-        r.Image.GetImageAsync(eventId, false))
+        r.Image.GetImageAsync(eventId, trackChanges))
             .ReturnsAsync(imageModel);
 
         _mapperMock.Setup(m =>
@@ -111,14 +113,14 @@ public class ImageServiceTests
             .Returns(It.IsAny<ImageResponseDto>());
 
         // Act
-        await _imageService.GetImageAsync(eventId, false);
+        await _imageService.GetImageAsync(eventId, trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, false), Times.Once);
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Image.GetImageAsync(eventId, false), Times.Once);
+        r.Image.GetImageAsync(eventId, trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<ImageResponseDto>(It.IsAny<Image>()), Times.Once);
@@ -138,28 +140,35 @@ public class ImageServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = true;
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(eventId, true))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
+        var imageid = Guid.NewGuid();
+        var image = new Image 
+        { 
+            Id = imageid 
+        };
+
         _repositoryManagerMock.Setup(r =>
-        r.Image.GetImageAsync(eventId, true))
-            .ReturnsAsync(It.IsAny<Image>());
+        r.Image.GetImageAsync(eventId, trackChanges))
+            .ReturnsAsync(image);
 
         _mapperMock.Setup(m =>
         m.Map(It.IsAny<IFormFile>(), It.IsAny<Image>()))
             .Returns(It.IsAny<Image>());
 
         // Act 
-        await _imageService.UpdateImageAsync(eventId, It.IsAny<IFormFile>(), true);
+        await _imageService.UpdateImageAsync(eventId, It.IsAny<IFormFile>(), trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, true), Times.Once);
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Image.GetImageAsync(eventId, true), Times.Once);
+        r.Image.GetImageAsync(eventId, trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map(It.IsAny<IFormFile>(), It.IsAny<Image>()), Times.Once);
@@ -174,8 +183,10 @@ public class ImageServiceTests
         { 
             Id = eventId,
         };
+        var trackChanges = false;
+
         _repositoryManagerMock.Setup(r => 
-        r.Event.GetByIdAsync(eventId, false))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
         var imageId = Guid.NewGuid();
@@ -185,21 +196,21 @@ public class ImageServiceTests
             EventId = eventId,
         };
         _repositoryManagerMock.Setup(r => 
-        r.Image.GetImageAsync(eventId, false))
+        r.Image.GetImageAsync(eventId, trackChanges))
             .ReturnsAsync(image);
 
         _repositoryManagerMock.Setup(r =>
         r.Image.DeleteImage(image));
 
         // Act 
-        await _imageService.DeleteImageAsync(eventId, false);
+        await _imageService.DeleteImageAsync(eventId, trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-		r.Event.GetByIdAsync(It.IsAny<Guid>(), false), Times.Once);
+		r.Event.GetByIdAsync(It.IsAny<Guid>(), trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-		r.Image.GetImageAsync(It.IsAny<Guid>(), false), Times.Once);
+		r.Image.GetImageAsync(It.IsAny<Guid>(), trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
 		r.Image.DeleteImage(It.IsAny<Image>()), Times.Once);

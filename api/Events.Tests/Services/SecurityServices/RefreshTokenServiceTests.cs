@@ -53,8 +53,10 @@ public class RefreshTokenServiceTests
     public async void UpdateRefreshToken_ReturnsVoid()
     {
         // Arrange
+        var trackChanges = true;
+
         _repositoryManagerMock.Setup(r =>
-        r.RefreshToken.GetRefreshTokenByUserIdAsync(It.IsAny<Guid>(), true))
+        r.RefreshToken.GetRefreshTokenByUserIdAsync(It.IsAny<Guid>(), trackChanges))
             .ReturnsAsync(It.IsAny<RefreshToken>());
 
         _mapperMock.Setup(m =>
@@ -64,12 +66,12 @@ public class RefreshTokenServiceTests
         // Act 
         await _refreshTokenService.UpdateRefreshToken(
             It.IsAny<Guid>(), 
-            It.IsAny<RefreshToken>(), 
-            true);
+            It.IsAny<RefreshToken>(),
+			trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-		r.RefreshToken.GetRefreshTokenByUserIdAsync(It.IsAny<Guid>(), true), Times.Once);
+		r.RefreshToken.GetRefreshTokenByUserIdAsync(It.IsAny<Guid>(), trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
 		m.Map(It.IsAny<RefreshToken>(), It.IsAny<RefreshToken>()), Times.Once);
@@ -88,8 +90,10 @@ public class RefreshTokenServiceTests
             Token = tokenValue,
 
 		};
+        var trackChanges = true;
+
 		_repositoryManagerMock.Setup(r =>
-        r.RefreshToken.GetRefreshTokenByValueAsync(It.IsAny<string>(), true))
+        r.RefreshToken.GetRefreshTokenByValueAsync(It.IsAny<string>(), trackChanges))
             .ReturnsAsync(refreshToken);
 
         _refreshProviderMock.Setup(r =>
@@ -97,7 +101,7 @@ public class RefreshTokenServiceTests
             .Returns(It.IsAny<RefreshToken>());
 
         _repositoryManagerMock.Setup(r => 
-        r.User.GetByIdAsync(It.IsAny<Guid>(), false))
+        r.User.GetByIdAsync(It.IsAny<Guid>(), trackChanges))
             .ReturnsAsync(It.IsAny<User>());
 
         _jwtProviderMock.Setup(j => 
@@ -105,17 +109,17 @@ public class RefreshTokenServiceTests
             .Returns(It.IsAny<string>());
 
         // Act
-        await _refreshTokenService.RefreshTokensFromTokenValue(tokenValue, true);
+        await _refreshTokenService.RefreshTokensFromTokenValue(tokenValue, trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-		r.RefreshToken.GetRefreshTokenByValueAsync(It.IsAny<string>(), true), Times.Once);
+		r.RefreshToken.GetRefreshTokenByValueAsync(It.IsAny<string>(), trackChanges), Times.Once);
 
         _refreshProviderMock.Verify(r =>
         r.GenerateToken(It.IsAny<Guid>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-		r.User.GetByIdAsync(It.IsAny<Guid>(), true), Times.Once);
+		r.User.GetByIdAsync(It.IsAny<Guid>(), trackChanges), Times.Once);
 
         _jwtProviderMock.Verify(j =>
 		j.GenerateToken(It.IsAny<User>()), Times.Once);

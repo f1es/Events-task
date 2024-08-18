@@ -41,17 +41,18 @@ public class EventServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = false;
 
-        _repositoryManagerMock.Setup(r => r.Event.GetByIdAsync(eventId, false))
+        _repositoryManagerMock.Setup(r => r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
         _mapperMock.Setup(m => m.Map<EventResponseDto>(eventModel)).Returns(It.IsAny<EventResponseDto>());
 
         // Act
-        var result = _eventService.GetEventByIdAsync(eventId, false);
+        var result = _eventService.GetEventByIdAsync(eventId, trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, false), Times.Once());
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once());
 
         _mapperMock.Verify(m =>
         m.Map<EventResponseDto>(eventModel), Times.Once);
@@ -96,6 +97,7 @@ public class EventServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = true;
 
         var validationResult = new ValidationResult();
         _updateValidatorMock.Setup(v =>
@@ -107,14 +109,14 @@ public class EventServiceTests
             .Returns(It.IsAny<Event>());
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(It.IsAny<Guid>(), true))
+        r.Event.GetByIdAsync(It.IsAny<Guid>(), trackChanges))
             .ReturnsAsync(eventModel);
 
         // Act 
         await _eventService.UpdateEventAsync(
             It.IsAny<Guid>(),
             It.IsAny<EventForUpdateRequestDto>(),
-            trackChanges: true);
+            trackChanges: trackChanges);
 
         // Assert
         _updateValidatorMock.Verify(v =>
@@ -124,7 +126,7 @@ public class EventServiceTests
         m.Map(It.IsAny<EventForUpdateRequestDto>(), It.IsAny<Event>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(It.IsAny<Guid>(), true), Times.Once);
+        r.Event.GetByIdAsync(It.IsAny<Guid>(), trackChanges), Times.Once);
     }
     [Fact]
     public async void DeleteEventAsync_ReturnsVoid()
@@ -135,20 +137,21 @@ public class EventServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = false;
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(It.IsAny<Guid>(), false))
+        r.Event.GetByIdAsync(It.IsAny<Guid>(), trackChanges))
             .ReturnsAsync(eventModel);
 
         _repositoryManagerMock.Setup(r =>
         r.Event.DeleteEvent(eventModel));
 
         // Act 
-        await _eventService.DeleteEventAsync(eventId, false);
+        await _eventService.DeleteEventAsync(eventId, trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(It.IsAny<Guid>(), false), Times.Once);
+        r.Event.GetByIdAsync(It.IsAny<Guid>(), trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
         r.Event.DeleteEvent(It.IsAny<Event>()), Times.Once);
@@ -157,8 +160,10 @@ public class EventServiceTests
     public async void GetAllEventsAsync_ReturnsIEnumerableEventResponseDto()
     {
         // Arrange 
+        var trackChanges = false;
+
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetAllAsync(It.IsAny<EventFilter>(), It.IsAny<Paging>(), false))
+        r.Event.GetAllAsync(It.IsAny<EventFilter>(), It.IsAny<Paging>(), trackChanges))
             .ReturnsAsync(It.IsAny<IEnumerable<Event>>());
 
         _mapperMock.Setup(m =>
@@ -168,11 +173,11 @@ public class EventServiceTests
         await _eventService.GetAllEventsAsync(
             It.IsAny<EventFilter>(),
             It.IsAny<Paging>(),
-            false);
+			trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetAllAsync(It.IsAny<EventFilter>(), It.IsAny<Paging>(), false), Times.Once);
+        r.Event.GetAllAsync(It.IsAny<EventFilter>(), It.IsAny<Paging>(), trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<IEnumerable<EventResponseDto>>(It.IsAny<IEnumerable<Event>>()), Times.Once);

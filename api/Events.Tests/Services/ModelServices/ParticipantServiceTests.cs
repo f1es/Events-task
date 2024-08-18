@@ -48,9 +48,10 @@ public class ParticipantServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = false;
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(eventId, false))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
         var userId = Guid.NewGuid();
@@ -60,7 +61,7 @@ public class ParticipantServiceTests
         };
 
         _repositoryManagerMock.Setup(r =>
-        r.User.GetByIdAsync(userId, false))
+        r.User.GetByIdAsync(userId, trackChanges))
             .ReturnsAsync(userModel);
 
         _mapperMock.Setup(m =>
@@ -78,17 +79,17 @@ public class ParticipantServiceTests
             eventId,
             userId,
             It.IsAny<ParticipantForCreateRequestDto>(),
-            false);
+			trackChanges);
 
         // Assert
         _createValidatorMock.Verify(v =>
         v.ValidateAsync(It.IsAny<ParticipantForCreateRequestDto>(), default), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, false), Times.Once);
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.User.GetByIdAsync(userId, false), Times.Once);
+        r.User.GetByIdAsync(userId, trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<Participant>(It.IsAny<ParticipantForCreateRequestDto>()), Times.Once);
@@ -109,13 +110,14 @@ public class ParticipantServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = false;
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(eventId, false))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
         _repositoryManagerMock.Setup(r =>
-        r.Participant.GetAllAsync(eventId, It.IsAny<Paging>(), false))
+        r.Participant.GetAllAsync(eventId, It.IsAny<Paging>(), trackChanges))
             .ReturnsAsync(It.IsAny<IEnumerable<Participant>>());
 
         _mapperMock.Setup(m =>
@@ -123,14 +125,14 @@ public class ParticipantServiceTests
             .Returns(It.IsAny<IEnumerable<ParticipantResponseDto>>());
 
         // Act
-        await _participantService.GetAllParticipantsAsync(eventId, It.IsAny<Paging>(), false);
+        await _participantService.GetAllParticipantsAsync(eventId, It.IsAny<Paging>(), trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, false), Times.Once);
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Participant.GetAllAsync(eventId, It.IsAny<Paging>(), false), Times.Once);
+        r.Participant.GetAllAsync(eventId, It.IsAny<Paging>(), trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<IEnumerable<ParticipantResponseDto>>(It.IsAny<IEnumerable<Participant>>()), Times.Once);
@@ -145,9 +147,10 @@ public class ParticipantServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = false;
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(eventId, false))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
         var participantId = Guid.NewGuid();
@@ -157,7 +160,7 @@ public class ParticipantServiceTests
         };
 
         _repositoryManagerMock.Setup(r =>
-        r.Participant.GetByIdAsync(participantId, false))
+        r.Participant.GetByIdAsync(participantId, trackChanges))
             .ReturnsAsync(participantModel);
 
         _mapperMock.Setup(m =>
@@ -165,14 +168,14 @@ public class ParticipantServiceTests
             .Returns(It.IsAny<ParticipantResponseDto>());
 
         // Act 
-        await _participantService.GetParticipantByIdAsync(eventId, participantId, false);
+        await _participantService.GetParticipantByIdAsync(eventId, participantId, trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, false), Times.Once);
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Participant.GetByIdAsync(participantId, false), Times.Once);
+        r.Participant.GetByIdAsync(participantId, trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<ParticipantResponseDto>(It.IsAny<Participant>()), Times.Once);
@@ -187,9 +190,10 @@ public class ParticipantServiceTests
         {
             Id = eventId,
         };
+        var trackChanges = false;
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(eventId, false))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
         var participantId = Guid.NewGuid();
@@ -199,21 +203,21 @@ public class ParticipantServiceTests
         };
 
         _repositoryManagerMock.Setup(r =>
-        r.Participant.GetByIdAsync(participantId, false))
+        r.Participant.GetByIdAsync(participantId, trackChanges))
             .ReturnsAsync(participantModel);
 
         _repositoryManagerMock.Setup(r =>
         r.Participant.DeleteParticipant(participantModel));
 
         // Act 
-        await _participantService.DeleteParticipantAsync(eventId, participantId, false);
+        await _participantService.DeleteParticipantAsync(eventId, participantId, trackChanges);
 
         // Assert
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, false), Times.Once);
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Participant.GetByIdAsync(participantId, false), Times.Once);
+        r.Participant.GetByIdAsync(participantId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
         r.Participant.DeleteParticipant(participantModel), Times.Once);
@@ -234,9 +238,10 @@ public class ParticipantServiceTests
         {
             Id = participantId,
         };
+        var trackChanges = true;
 
         _repositoryManagerMock.Setup(r =>
-        r.Participant.GetByIdAsync(participantId, true))
+        r.Participant.GetByIdAsync(participantId, trackChanges))
             .ReturnsAsync(participantModel);
 
         var eventId = Guid.NewGuid();
@@ -246,7 +251,7 @@ public class ParticipantServiceTests
         };
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.GetByIdAsync(eventId, true))
+        r.Event.GetByIdAsync(eventId, trackChanges))
             .ReturnsAsync(eventModel);
 
         _mapperMock.Setup(m =>
@@ -258,20 +263,20 @@ public class ParticipantServiceTests
             eventId,
             participantId,
             It.IsAny<ParticipantForUpdateRequestDto>(),
-            true);
+			trackChanges);
 
         // Assert
         _updateValidatorMock.Verify(v =>
         v.ValidateAsync(It.IsAny<ParticipantForUpdateRequestDto>(), default), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Event.GetByIdAsync(eventId, true), Times.Once);
+        r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Participant.GetByIdAsync(participantId, true), Times.Once);
+        r.Participant.GetByIdAsync(participantId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Participant.GetByIdAsync(participantId, true), Times.Once);
+        r.Participant.GetByIdAsync(participantId, trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map(It.IsAny<ParticipantForUpdateRequestDto>(), It.IsAny<Participant>()), Times.Once);
