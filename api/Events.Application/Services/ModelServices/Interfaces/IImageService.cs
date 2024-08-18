@@ -6,7 +6,8 @@ namespace Events.Application.Services.ModelServices.Interfaces;
 
 public interface IImageService
 {
-    public Task<ImageResponseDto> UploadImageAsync(Guid eventId, IFormFile image, bool trackChanges);
-    public Task<ImageResponseDto> GetImageAsync(Guid eventId, bool trackChanges);
-    public Task UpdateImageAsync(Guid eventId, IFormFile imageForm, bool trackChanges);
+    Task<ImageResponseDto> UploadImageAsync(Guid eventId, IFormFile image, bool trackChanges);
+    Task<ImageResponseDto> GetImageAsync(Guid eventId, bool trackChanges);
+    Task UpdateImageAsync(Guid eventId, IFormFile imageForm, bool trackChanges);
+	Task DeleteImageAsync(Guid eventId, bool trackChanges);
 }

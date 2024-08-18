@@ -51,12 +51,7 @@ public class ImageService : IImageService
     {
         await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
 
-        var image = await _repositoryManager.Image.GetImageAsync(eventId, trackChanges);
-
-        if (image is null)
-        {
-            throw new NotFoundException($"image for event {eventId} not found");
-        }
+        var image = await GetImageByEventIdAndCheckIfExistAsync(eventId, trackChanges);
 
         var imageResponse = _mapper.Map<ImageResponseDto>(image);
 
@@ -73,12 +68,23 @@ public class ImageService : IImageService
 
         await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
 
-        var image = await _repositoryManager.Image.GetImageAsync(eventId, trackChanges);
+        var image = await GetImageByEventIdAndCheckIfExistAsync(eventId, trackChanges);
 
-        image = _mapper.Map(imageForm, image);
+		image = _mapper.Map(imageForm, image);
 
         await _repositoryManager.SaveAsync();
     }
+
+    public async Task DeleteImageAsync(Guid eventId, bool trackChanges)
+    {
+        await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
+
+        var image = await GetImageByEventIdAndCheckIfExistAsync(eventId, trackChanges);
+
+		_repositoryManager.Image.DeleteImage(image);
+
+		await _repositoryManager.SaveAsync();
+	}
 
     private async Task<Event> GetEventByIdAndCheckIfExistAsync(Guid eventId, bool trackChanges)
     {
@@ -91,4 +97,14 @@ public class ImageService : IImageService
         return eventModel;
     }
 
+    private async Task<Image> GetImageByEventIdAndCheckIfExistAsync(Guid eventId, bool trackChanges)
+    {
+		var image = await _repositoryManager.Image.GetImageAsync(eventId, trackChanges);
+		if (image is null)
+		{
+			throw new NotFoundException($"image for event {eventId} not found");
+		}
+
+        return image;
+	}
 }

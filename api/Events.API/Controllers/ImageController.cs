@@ -44,9 +44,22 @@ public class ImageController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> UpdateImage(Guid eventId, IFormFile image)
 	{
 		await _serviceManager.ImageService.UpdateImageAsync(eventId, image, trackChanges: true);
+
+		return NoContent();
+	}
+	[HttpDelete]
+	[RequiredRole("Admin, Manager")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> DeleteImage(Guid eventId)
+	{
+		await _serviceManager.ImageService.DeleteImageAsync(eventId, trackChanges: false);
 
 		return NoContent();
 	}
