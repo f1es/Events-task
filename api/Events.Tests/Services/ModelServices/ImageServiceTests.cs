@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.ModelServices.Implementations;
+using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Response;
 using FluentValidation;
@@ -15,7 +16,7 @@ public class ImageServiceTests
     private readonly Mock<IRepositoryManager> _repositoryManagerMock;
     private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<IValidator<IFormFile>> _validatorMock;
-    private readonly ImageService _imageService;
+    private readonly IImageService _imageService;
     public ImageServiceTests()
     {
         _repositoryManagerMock = new Mock<IRepositoryManager>();
@@ -162,5 +163,45 @@ public class ImageServiceTests
 
         _mapperMock.Verify(m =>
         m.Map(It.IsAny<IFormFile>(), It.IsAny<Image>()), Times.Once);
+    }
+
+    [Fact]
+    public async void DeleteImageAsync_ReturnsVoid()
+    {
+        // Arrange
+        var eventId = Guid.NewGuid();
+        var eventModel = new Event 
+        { 
+            Id = eventId,
+        };
+        _repositoryManagerMock.Setup(r => 
+        r.Event.GetByIdAsync(eventId, false))
+            .ReturnsAsync(eventModel);
+
+        var imageId = Guid.NewGuid();
+        var image = new Image 
+        { 
+            Id = imageId ,
+            EventId = eventId,
+        };
+        _repositoryManagerMock.Setup(r => 
+        r.Image.GetImageAsync(eventId, false))
+            .ReturnsAsync(image);
+
+        _repositoryManagerMock.Setup(r =>
+        r.Image.DeleteImage(image));
+
+        // Act 
+        await _imageService.DeleteImageAsync(eventId, false);
+
+        // Assert
+        _repositoryManagerMock.Verify(r =>
+		r.Event.GetByIdAsync(It.IsAny<Guid>(), false), Times.Once);
+
+        _repositoryManagerMock.Verify(r =>
+		r.Image.GetImageAsync(It.IsAny<Guid>(), false), Times.Once);
+
+        _repositoryManagerMock.Verify(r =>
+		r.Image.DeleteImage(It.IsAny<Image>()), Times.Once);
     }
 }
