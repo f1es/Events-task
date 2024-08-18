@@ -104,7 +104,7 @@ public class UserService : IUserService
         await _repositoryManager.SaveAsync();
     }
 
-    public async Task GrantRoleForUser(Guid id, string role, bool trackChanges)
+    public async Task GrantRoleForUserAsync(Guid id, string role, bool trackChanges)
     {
 		var user = await _repositoryManager.User.GetByIdAsync(id, trackChanges);
 		if (user is null)

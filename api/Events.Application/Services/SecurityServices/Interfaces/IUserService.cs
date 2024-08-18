@@ -14,5 +14,5 @@ public interface IUserService
         UserLoginRequestDto user,
         bool trackUsernameChanges,
         bool trackRefreshTokenChanges);
-    Task GrantRoleForUser(Guid id, string role, bool trackChanges);
+    Task GrantRoleForUserAsync(Guid id, string role, bool trackChanges);
 }

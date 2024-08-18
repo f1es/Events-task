@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Events.Application.Repositories.Interfaces;
 using Events.Application.Services.ModelServices.Implementations;
+using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Models;
 using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
@@ -17,7 +18,7 @@ public class ParticipantServiceTests
     private readonly Mock<IValidator<ParticipantForCreateRequestDto>> _createValidatorMock;
     private readonly Mock<IValidator<ParticipantForUpdateRequestDto>> _updateValidatorMock;
     private readonly Mock<IMapper> _mapperMock;
-    private readonly ParticipantService _participantService;
+    private readonly IParticipantService _participantService;
     public ParticipantServiceTests()
     {
         _repositoryManagerMock = new Mock<IRepositoryManager>();

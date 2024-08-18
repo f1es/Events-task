@@ -69,7 +69,7 @@ public class UserController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GrantRoleForUser([FromBody] GrantRoleDto grantRole)
     {
-        await _serviceManager.UserService.GrantRoleForUser(
+        await _serviceManager.UserService.GrantRoleForUserAsync(
             grantRole.UserId, 
             grantRole.Role, 
             trackChanges: true);
