@@ -188,4 +188,69 @@ public class UserServiceTests
         _mapperMock.Verify(m =>
 		m.Map<IEnumerable<UserResponseDto>>(It.IsAny<IEnumerable<User>>()), Times.Once);
 	}
+    [Fact]
+    public async void LoginUserAsync_ReturnsVoid()
+    {
+        // Arrange
+        var validationResult = new ValidationResult();
+        
+        _loginValidatorMock.Setup(v => 
+        v.Validate(It.IsAny<UserLoginRequestDto>()))
+            .Returns(validationResult);
+
+        var trackUserChanges = false;
+        var trackRefreshTokenChanges = true;
+
+        var username = "231";
+
+        var user = new User
+        {
+            Username = username,
+        };
+
+		_repositoryManagerMock.Setup(r => 
+        r.User.GetByUsernameAsync(username, trackUserChanges))
+            .ReturnsAsync(user);
+
+        _passwordHasherMock.Setup(p => 
+        p.VerifyPassword(It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(true);
+
+        _jwtProviderMock.Setup(p =>
+        p.GenerateToken(user))
+            .Returns(It.IsAny<string>());
+
+        _refreshProviderMock.Setup(r =>
+        r.GenerateToken(user.Id))
+            .Returns(It.IsAny<RefreshToken>());
+
+        _refreshTokenServiceMock.Setup(r => 
+        r.UpdateRefreshToken(user.Id, It.IsAny<RefreshToken>(), trackRefreshTokenChanges));
+
+        var password = "123";
+        var userLoginDto = new UserLoginRequestDto(username, password);
+
+        // Act
+        await _userService.LoginUserAsync(userLoginDto, trackUserChanges, trackRefreshTokenChanges);
+
+        // Assert
+        _loginValidatorMock.Verify(v =>
+		v.Validate(It.IsAny<UserLoginRequestDto>()), Times.Once);
+
+        _repositoryManagerMock.Verify(r =>
+		r.User.GetByUsernameAsync(username, trackUserChanges), Times.Once);
+
+        _passwordHasherMock.Verify(p =>
+		p.VerifyPassword(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+
+        _jwtProviderMock.Verify(p =>
+		p.GenerateToken(user), Times.Once);
+
+        _refreshProviderMock.Verify(r =>
+		r.GenerateToken(user.Id), Times.Once);
+
+        _refreshTokenServiceMock.Verify(r =>
+		r.UpdateRefreshToken(user.Id, It.IsAny<RefreshToken>(), trackRefreshTokenChanges), Times.Once);
+
+    }
 }
