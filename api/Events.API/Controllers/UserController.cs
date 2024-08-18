@@ -38,7 +38,7 @@ public class UserController : ControllerBase
     {
         var tokens = await _serviceManager.UserService.LoginUserAsync(
             user, 
-            trackUsernameChanges: false,
+            trackUserChanges: false,
             trackRefreshTokenChanges: true);
 
         Response.AppendAccessToken(tokens.accessToken);

@@ -12,7 +12,7 @@ public interface IUserService
     Task RegisterUserAsync(UserRegisterRequestDto user, bool trackChanges);
     Task<(string accessToken, RefreshToken refreshToken)> LoginUserAsync(
         UserLoginRequestDto user,
-        bool trackUsernameChanges,
+        bool trackUserChanges,
         bool trackRefreshTokenChanges);
     Task GrantRoleForUserAsync(Guid id, string role, bool trackChanges);
 }

@@ -43,7 +43,7 @@ public class UserService : IUserService
     }
     public async Task<(string accessToken, RefreshToken refreshToken)> LoginUserAsync(
         UserLoginRequestDto user,
-        bool trackUsernameChanges,
+        bool trackUserChanges,
         bool trackRefreshTokenChanges)
     {
         var validationResult = _loginValidator.Validate(user);
@@ -52,7 +52,7 @@ public class UserService : IUserService
             throw new InvalidModelException(validationResult.GetMessage());
         }
 
-        var userModel = await _repositoryManager.User.GetByUsernameAsync(user.Username, trackUsernameChanges);
+        var userModel = await _repositoryManager.User.GetByUsernameAsync(user.Username, trackUserChanges);
         if (userModel is null)
         {
             throw new NotFoundException($"user with username {user.Username} not found");
