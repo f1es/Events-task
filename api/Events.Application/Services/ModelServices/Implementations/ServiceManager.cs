@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Events.Application.Options;
-using Events.Application.Repositories.Interfaces;
+using Events.Domain.Repositories.Interfaces;
 using Events.Application.Services.ModelServices.Interfaces;
 using Events.Application.Services.SecurityServices.Implementations;
 using Events.Application.Services.SecurityServices.Interfaces;
