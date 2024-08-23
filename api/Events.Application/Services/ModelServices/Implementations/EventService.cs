@@ -31,13 +31,6 @@ public class EventService : IEventService
     }
     public async Task<EventResponseDto> CreateEventAsync(EventForCreateRequestDto eventDto)
     {
-        var validationResult = await _createValidator.ValidateAsync(eventDto);
-
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidModelException(validationResult.GetMessage());
-        }
-
         var mappedEvent = _mapper.Map<Event>(eventDto);
 
         _repositoryManager.Event.CreateEvent(mappedEvent);
@@ -77,13 +70,6 @@ public class EventService : IEventService
 
     public async Task UpdateEventAsync(Guid id, EventForUpdateRequestDto eventDto, bool trackChanges)
     {
-        var validationResult = await _updateValidator.ValidateAsync(eventDto);
-
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidModelException(validationResult.GetMessage());
-        }
-
         var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
 
         eventModel = _mapper.Map(eventDto, eventModel);

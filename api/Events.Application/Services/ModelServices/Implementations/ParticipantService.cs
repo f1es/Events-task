@@ -34,13 +34,6 @@ public class ParticipantService : IParticipantService
         ParticipantForCreateRequestDto participant,
         bool trackChanges)
     {
-        var validationResult = await _createValidator.ValidateAsync(participant);
-
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidModelException(validationResult.GetMessage());
-        }
-
         var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
         var userModel = await GetUserByIdAndCheckIfExistAsync(userId, trackChanges);
 
@@ -94,13 +87,6 @@ public class ParticipantService : IParticipantService
         ParticipantForUpdateRequestDto participant,
         bool trackChanges)
     {
-        var validationResult = await _updateValidator.ValidateAsync(participant);
-
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidModelException(validationResult.GetMessage());
-        }
-
         var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
 
         var participantModel = await _repositoryManager.Participant.GetByIdAsync(id, trackChanges);

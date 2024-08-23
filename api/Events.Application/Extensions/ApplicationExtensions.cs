@@ -4,6 +4,7 @@ using Events.Application.Validators;
 using Events.Application.Services.ModelServices.Implementations;
 using Events.Application.Services.ModelServices.Interfaces;
 using Events.Application.MapperProfiles;
+using FluentValidation.AspNetCore;
 
 namespace Events.Application.Extensions;
 
@@ -12,6 +13,7 @@ public static class ApplicationExtensions
 	public static void ConfigureValidators(this IServiceCollection services)
 	{
 		services.AddValidatorsFromAssemblyContaining<EventForCreateRequestDtoValidation>();
+		services.AddFluentValidationAutoValidation();
 	}
 
 	public static void ConfigureServices(this IServiceCollection services) => 

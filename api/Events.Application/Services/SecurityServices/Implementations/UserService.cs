@@ -46,12 +46,6 @@ public class UserService : IUserService
         bool trackUserChanges,
         bool trackRefreshTokenChanges)
     {
-        var validationResult = _loginValidator.Validate(user);
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidModelException(validationResult.GetMessage());
-        }
-
         var userModel = await _repositoryManager.User.GetByUsernameAsync(user.Username, trackUserChanges);
         if (userModel is null)
         {
@@ -78,12 +72,6 @@ public class UserService : IUserService
 
     public async Task RegisterUserAsync(UserRegisterRequestDto user, bool trackChanges)
     {
-        var validationResult = _registerValidator.Validate(user);
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidModelException(validationResult.GetMessage());
-        }
-
         var existUser = await _repositoryManager.User.GetByUsernameAsync(user.Username, trackChanges);
         if (existUser != null)
         {
