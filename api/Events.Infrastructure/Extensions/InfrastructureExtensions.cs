@@ -1,4 +1,4 @@
-﻿using Events.Application.Repositories.Interfaces;
+﻿using Events.Domain.Repositories.Interfaces;
 using Events.Infrastructure.Repositories.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 

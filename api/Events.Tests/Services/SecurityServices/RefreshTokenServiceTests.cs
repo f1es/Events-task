@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Events.Application.Repositories.Interfaces;
+using Events.Domain.Repositories.Interfaces;
 using Events.Application.Services.SecurityServices.Implementations;
 using Events.Application.Services.SecurityServices.Interfaces;
 using Events.Domain.Models;

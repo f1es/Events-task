@@ -1,4 +1,4 @@
-﻿using Events.Application.Repositories.Interfaces;
+﻿using Events.Domain.Repositories.Interfaces;
 using Events.Domain.Models;
 using Events.Domain.Shared;
 using Events.Infrastructure.Context;

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Events.Application.Extensions;
-using Events.Application.Repositories.Interfaces;
+using Events.Domain.Repositories.Interfaces;
 using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
