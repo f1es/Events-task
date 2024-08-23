@@ -14,25 +14,16 @@ public class ImageService : IImageService
 {
     private readonly IRepositoryManager _repositoryManager;
     private readonly IMapper _mapper;
-    private readonly IValidator<IFormFile> _validator;
     public ImageService(
         IRepositoryManager repositoryManager,
-        IMapper mapper,
-        IValidator<IFormFile> validator)
+        IMapper mapper)
     {
         _repositoryManager = repositoryManager;
         _mapper = mapper;
-        _validator = validator;
     }
 
     public async Task<ImageResponseDto> UploadImageAsync(Guid eventId, IFormFile imageForm, bool trackChanges)
     {
-        var validationResult = _validator.Validate(imageForm);
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidModelException(validationResult.GetMessage());
-        }
-
         await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
 
         var image = _mapper.Map<Image>(imageForm);
@@ -60,12 +51,6 @@ public class ImageService : IImageService
 
     public async Task UpdateImageAsync(Guid eventId, IFormFile imageForm, bool trackChanges)
     {
-        var validationResult = _validator.Validate(imageForm);
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidModelException(validationResult.GetMessage());
-        }
-
         await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
 
         var image = await GetImageByEventIdAndCheckIfExistAsync(eventId, trackChanges);

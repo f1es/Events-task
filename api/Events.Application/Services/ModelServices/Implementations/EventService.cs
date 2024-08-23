@@ -16,18 +16,12 @@ public class EventService : IEventService
 {
     private readonly IRepositoryManager _repositoryManager;
     private readonly IMapper _mapper;
-    private readonly IValidator<EventForCreateRequestDto> _createValidator;
-    private readonly IValidator<EventForUpdateRequestDto> _updateValidator;
     public EventService(
         IRepositoryManager repositoryManager,
-        IMapper mapper,
-        IValidator<EventForCreateRequestDto> createValidator,
-        IValidator<EventForUpdateRequestDto> updateValidator)
+        IMapper mapper)
     {
         _repositoryManager = repositoryManager;
         _mapper = mapper;
-        _createValidator = createValidator;
-        _updateValidator = updateValidator;
     }
     public async Task<EventResponseDto> CreateEventAsync(EventForCreateRequestDto eventDto)
     {

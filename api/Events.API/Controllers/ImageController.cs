@@ -1,5 +1,6 @@
 ﻿using Events.API.Attributes;
 using Events.Application.Services.ModelServices.Interfaces;
+using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,9 +22,9 @@ public class ImageController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
-	public async Task<IActionResult> UploadImage(Guid eventId,  IFormFile image)
+	public async Task<IActionResult> UploadImage(Guid eventId, [FromForm] ImageRequestDto image)
 	{
-		await _serviceManager.ImageService.UploadImageAsync(eventId, image, trackChanges: false);
+		await _serviceManager.ImageService.UploadImageAsync(eventId, image.Image, trackChanges: false);
 
 		return NoContent();
 	}
@@ -45,9 +46,9 @@ public class ImageController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<IActionResult> UpdateImage(Guid eventId, IFormFile image)
+	public async Task<IActionResult> UpdateImage(Guid eventId, [FromForm] ImageRequestDto image)
 	{
-		await _serviceManager.ImageService.UpdateImageAsync(eventId, image, trackChanges: true);
+		await _serviceManager.ImageService.UpdateImageAsync(eventId, image.Image, trackChanges: true);
 
 		return NoContent();
 	}

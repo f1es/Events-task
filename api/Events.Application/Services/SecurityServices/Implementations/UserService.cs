@@ -20,17 +20,13 @@ public class UserService : IUserService
     private readonly IJwtProvider _jwtProvider;
     private readonly IRefreshProvider _refreshProvider;
     private readonly IRefreshTokenService _refreshTokenService;
-    private readonly IValidator<UserLoginRequestDto> _loginValidator;
-    private readonly IValidator<UserRegisterRequestDto> _registerValidator;
     public UserService(
         IRepositoryManager repositoryManager,
         IPasswordHasher passwordHasher,
         IMapper mapper,
         IJwtProvider jwtProvider,
         IRefreshProvider refreshProvider,
-        IRefreshTokenService refreshTokenService,
-        IValidator<UserLoginRequestDto> loginValidator,
-        IValidator<UserRegisterRequestDto> registerValidator)
+        IRefreshTokenService refreshTokenService)
     {
         _repositoryManager = repositoryManager;
         _passwordHasher = passwordHasher;
@@ -38,8 +34,6 @@ public class UserService : IUserService
         _jwtProvider = jwtProvider;
         _refreshProvider = refreshProvider;
         _refreshTokenService = refreshTokenService;
-        _loginValidator = loginValidator;
-        _registerValidator = registerValidator;
     }
     public async Task<(string accessToken, RefreshToken refreshToken)> LoginUserAsync(
         UserLoginRequestDto user,

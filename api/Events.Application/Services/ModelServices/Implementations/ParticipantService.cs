@@ -15,18 +15,12 @@ public class ParticipantService : IParticipantService
 {
     private readonly IRepositoryManager _repositoryManager;
     private readonly IMapper _mapper;
-    private readonly IValidator<ParticipantForCreateRequestDto> _createValidator;
-    private readonly IValidator<ParticipantForUpdateRequestDto> _updateValidator;
     public ParticipantService(
         IRepositoryManager repositoryManager,
-        IMapper mapper,
-        IValidator<ParticipantForUpdateRequestDto> updateValidator,
-        IValidator<ParticipantForCreateRequestDto> createValidator)
+        IMapper mapper)
     {
         _repositoryManager = repositoryManager;
         _mapper = mapper;
-        _updateValidator = updateValidator;
-        _createValidator = createValidator;
     }
     public async Task<ParticipantResponseDto> CreateParticipantAsync(
         Guid eventId,

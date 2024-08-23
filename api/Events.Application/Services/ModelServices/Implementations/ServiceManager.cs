@@ -25,34 +25,23 @@ public class ServiceManager : IServiceManager
         IRepositoryManager repositoryManager,
         IMapper mapper,
         IOptions<JwtOptions> jwtOptions,
-        IOptions<RefreshTokenOptions> refreshTokenOptions,
-        IValidator<EventForCreateRequestDto> eventCreateValidator,
-        IValidator<EventForUpdateRequestDto> eventUpdateValidator,
-        IValidator<ParticipantForCreateRequestDto> participantCreateValidator,
-        IValidator<ParticipantForUpdateRequestDto> participantForUpdateValidator,
-        IValidator<UserLoginRequestDto> userLoginValidator,
-        IValidator<UserRegisterRequestDto> userRegisterValidator,
-        IValidator<IFormFile> imageValidator)
+        IOptions<RefreshTokenOptions> refreshTokenOptions)
     {
         _eventService = new Lazy<IEventService>(() =>
         new EventService(
         repositoryManager,
-        mapper,
-        eventCreateValidator,
-        eventUpdateValidator));
+        mapper));
 
         _participantService = new Lazy<IParticipantService>(() =>
         new ParticipantService(
         repositoryManager,
-        mapper,
-        participantForUpdateValidator,
-        participantCreateValidator));
+        mapper));
 
         _refreshTokenService = new Lazy<IRefreshTokenService>(() =>
         new RefreshTokenService(repositoryManager, RefreshProvider, JwtProvider, mapper));
 
         _imageService = new Lazy<IImageService>(() =>
-        new ImageService(repositoryManager, mapper, imageValidator));
+        new ImageService(repositoryManager, mapper));
 
         _refreshProvider = new Lazy<IRefreshProvider>(() =>
         new RefreshProvider(refreshTokenOptions));
@@ -70,9 +59,7 @@ public class ServiceManager : IServiceManager
             mapper,
             JwtProvider,
             RefreshProvider,
-            RefreshTokenService,
-            userLoginValidator,
-            userRegisterValidator));
+            RefreshTokenService));
     }
 
     public IEventService EventService => _eventService.Value;
