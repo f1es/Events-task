@@ -3,12 +3,12 @@ using FluentValidation;
 
 namespace Events.Application.Validators;
 
-public class ParticipantForCreateRequestDtoValidation : AbstractValidator<ParticipantForCreateRequestDto>
+public class ParticipantRequestDtoValidation : AbstractValidator<ParticipantRequestDto>
 {
-    public ParticipantForCreateRequestDtoValidation()
+    public ParticipantRequestDtoValidation()
     {
         RuleFor(p => p.Name)
-            .MaximumLength(201)
+            .MaximumLength(200)
             .NotEmpty();
 
         RuleFor(p => p.Surname)

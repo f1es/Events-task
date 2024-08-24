@@ -12,7 +12,7 @@ public static class ApplicationExtensions
 {
 	public static void ConfigureValidators(this IServiceCollection services)
 	{
-		services.AddValidatorsFromAssemblyContaining<EventForCreateRequestDtoValidation>();
+		services.AddValidatorsFromAssemblyContaining<EventRequestDtoValidation>();
 		services.AddFluentValidationAutoValidation();
 	}
 

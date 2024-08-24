@@ -9,7 +9,7 @@ public class ParticipantMapperProfile : Profile
 {
     public ParticipantMapperProfile()
     {
-		CreateMap<ParticipantForCreateRequestDto, Participant>();
+		CreateMap<ParticipantRequestDto, Participant>();
 
 		CreateMap<Participant, ParticipantResponseDto>();
 	}

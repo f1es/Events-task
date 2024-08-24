@@ -23,7 +23,7 @@ public class ParticipantService : IParticipantService
     public async Task<ParticipantResponseDto> CreateParticipantAsync(
         Guid eventId,
         Guid userId,
-        ParticipantForCreateRequestDto participant,
+		ParticipantRequestDto participant,
         bool trackChanges)
     {
         var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
@@ -76,7 +76,7 @@ public class ParticipantService : IParticipantService
     public async Task UpdateParticipantAsync(
         Guid eventId,
         Guid id,
-        ParticipantForUpdateRequestDto participant,
+		ParticipantRequestDto participant,
         bool trackChanges)
     {
         var eventModel = await GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);

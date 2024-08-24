@@ -52,7 +52,7 @@ public class ParticipantController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-	public async Task<IActionResult> CreateParticipant(Guid eventId, [FromBody] ParticipantForCreateRequestDto participant)
+	public async Task<IActionResult> CreateParticipant(Guid eventId, [FromBody] ParticipantRequestDto participant)
     {
         Request.Cookies.TryGetValue("acc", out string? token);
         var userId = _serviceManager.JwtProvider.GetUserId(token);
@@ -84,7 +84,7 @@ public class ParticipantController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
-	public async Task<IActionResult> UpdateParticipant(Guid eventId, Guid id, [FromBody] ParticipantForUpdateRequestDto participant)
+	public async Task<IActionResult> UpdateParticipant(Guid eventId, Guid id, [FromBody] ParticipantRequestDto participant)
     {
         await _serviceManager
             .ParticipantService

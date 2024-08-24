@@ -55,7 +55,7 @@ public class ParticipantServiceTests
             .ReturnsAsync(userModel);
 
         _mapperMock.Setup(m =>
-        m.Map<Participant>(It.IsAny<ParticipantForCreateRequestDto>()))
+        m.Map<Participant>(It.IsAny<ParticipantRequestDto>()))
             .Returns(It.IsAny<Participant>());
 
         _repositoryManagerMock.Setup(r =>
@@ -68,7 +68,7 @@ public class ParticipantServiceTests
         await _participantService.CreateParticipantAsync(
             eventId,
             userId,
-            It.IsAny<ParticipantForCreateRequestDto>(),
+            It.IsAny<ParticipantRequestDto>(),
 			trackChanges);
 
         // Assert
@@ -79,7 +79,7 @@ public class ParticipantServiceTests
         r.User.GetByIdAsync(userId, trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
-        m.Map<Participant>(It.IsAny<ParticipantForCreateRequestDto>()), Times.Once);
+        m.Map<Participant>(It.IsAny<ParticipantRequestDto>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
         r.Participant.CreateParticipant(eventId, userId, It.IsAny<Participant>()), Times.Once);
@@ -236,14 +236,14 @@ public class ParticipantServiceTests
             .ReturnsAsync(eventModel);
 
         _mapperMock.Setup(m =>
-        m.Map(It.IsAny<ParticipantForUpdateRequestDto>(), It.IsAny<Participant>()))
+        m.Map(It.IsAny<ParticipantRequestDto>(), It.IsAny<Participant>()))
             .Returns(It.IsAny<Participant>());
 
         // Act 
         await _participantService.UpdateParticipantAsync(
             eventId,
             participantId,
-            It.IsAny<ParticipantForUpdateRequestDto>(),
+            It.IsAny<ParticipantRequestDto>(),
 			trackChanges);
 
         // Assert
@@ -257,6 +257,6 @@ public class ParticipantServiceTests
         r.Participant.GetByIdAsync(participantId, trackChanges), Times.Once);
 
         _mapperMock.Verify(m =>
-        m.Map(It.IsAny<ParticipantForUpdateRequestDto>(), It.IsAny<Participant>()), Times.Once);
+        m.Map(It.IsAny<ParticipantRequestDto>(), It.IsAny<Participant>()), Times.Once);
     }
 }

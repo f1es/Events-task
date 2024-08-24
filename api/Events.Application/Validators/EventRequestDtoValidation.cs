@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Events.Application.Validators;
 
-public class EventForCreateRequestDtoValidation : AbstractValidator<EventRequestDto>
+public class EventRequestDtoValidation : AbstractValidator<EventRequestDto>
 {
-    public EventForCreateRequestDtoValidation()
+    public EventRequestDtoValidation()
     {
         RuleFor(e => e.Name)
             .MaximumLength(250)

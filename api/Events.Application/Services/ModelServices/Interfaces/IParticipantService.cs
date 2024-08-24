@@ -9,7 +9,7 @@ public interface IParticipantService
     Task<ParticipantResponseDto> CreateParticipantAsync(
         Guid eventId,
         Guid userId,
-        ParticipantForCreateRequestDto participant,
+		ParticipantRequestDto participant,
         bool trackChanges);
     Task<IEnumerable<ParticipantResponseDto>> GetAllParticipantsAsync(Guid eventId, Paging paging, bool trackChanges);
     Task<ParticipantResponseDto> GetParticipantByIdAsync(Guid eventId, Guid id, bool trackChanges);
@@ -17,6 +17,6 @@ public interface IParticipantService
     Task UpdateParticipantAsync(
         Guid eventId,
         Guid id,
-        ParticipantForUpdateRequestDto participant,
+		ParticipantRequestDto participant,
         bool trackChanges);
 }
