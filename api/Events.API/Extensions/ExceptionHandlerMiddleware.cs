@@ -42,12 +42,10 @@ public class ExceptionHandlerMiddleware
     private HttpStatusCode GetStatusCode(Exception exception) =>
 		exception switch
 		{
-			AlreadyExistException => HttpStatusCode.Conflict,
+			AlreadyExistsException => HttpStatusCode.Conflict,
 			NotFoundException => HttpStatusCode.NotFound,
-			FailedToLoginException => HttpStatusCode.Unauthorized,
 			BadRequestException => HttpStatusCode.BadRequest,
-			InvalidModelException => HttpStatusCode.BadRequest,
-			InvalidRefreshTokenException => HttpStatusCode.Unauthorized,
+			UnauthorizedException => HttpStatusCode.Unauthorized,
 			_ => HttpStatusCode.InternalServerError
 		};
 }

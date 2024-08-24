@@ -53,7 +53,7 @@ public class RefreshTokenService : IRefreshTokenService
 
         if (!ValidateRefreshToken(refreshToken, refreshTokenValue, trackChanges))
         {
-            throw new InvalidRefreshTokenException("Refresh token is invalid");
+            throw new UnauthorizedException("Refresh token is invalid");
         }
 
         var userId = refreshToken.UserId;

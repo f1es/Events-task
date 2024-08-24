@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using Events.Application.Extensions;
-using Events.Domain.Repositories.Interfaces;
 using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
+using Events.Domain.Repositories.Interfaces;
 using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
-using FluentValidation;
 
 namespace Events.Application.Services.ModelServices.Implementations;
 

@@ -43,13 +43,13 @@ public class UserService : IUserService
         var userModel = await _repositoryManager.User.GetByUsernameAsync(user.Username, trackUserChanges);
         if (userModel is null)
         {
-            throw new NotFoundException($"user with username {user.Username} not found");
-        }
+			throw new UnauthorizedException("Failed to login");
+		}
 
         var verificationResult = _passwordHasher.VerifyPassword(user.Password, userModel.PasswordHash);
         if (!verificationResult)
         {
-            throw new FailedToLoginException($"Failed to login");
+            throw new UnauthorizedException("Failed to login"); 
         }
 
         var accessToken = _jwtProvider.GenerateToken(userModel);
@@ -69,7 +69,7 @@ public class UserService : IUserService
         var existUser = await _repositoryManager.User.GetByUsernameAsync(user.Username, trackChanges);
         if (existUser != null)
         {
-            throw new AlreadyExistException($"user with username {user.Username} already exist");
+            throw new AlreadyExistsException($"user with username {user.Username} already exist");
         }
 
         var passwordHash = _passwordHasher.GenerateHash(user.Password);
