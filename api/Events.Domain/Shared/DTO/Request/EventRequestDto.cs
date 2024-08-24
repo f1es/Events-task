@@ -1,6 +1,6 @@
 ﻿namespace Events.Domain.Shared.DTO.Request;
 
-public record EventForUpdateRequestDto(
+public record EventRequestDto(
 	string Name,
 	string Description,
 	DateTime Date,

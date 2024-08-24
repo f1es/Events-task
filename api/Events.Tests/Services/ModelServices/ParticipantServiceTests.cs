@@ -15,22 +15,16 @@ namespace Events.Tests.Services.ModelServices;
 public class ParticipantServiceTests
 {
     private readonly Mock<IRepositoryManager> _repositoryManagerMock;
-    private readonly Mock<IValidator<ParticipantForCreateRequestDto>> _createValidatorMock;
-    private readonly Mock<IValidator<ParticipantForUpdateRequestDto>> _updateValidatorMock;
     private readonly Mock<IMapper> _mapperMock;
     private readonly IParticipantService _participantService;
     public ParticipantServiceTests()
     {
         _repositoryManagerMock = new Mock<IRepositoryManager>();
         _mapperMock = new Mock<IMapper>();
-        _createValidatorMock = new Mock<IValidator<ParticipantForCreateRequestDto>>();
-        _updateValidatorMock = new Mock<IValidator<ParticipantForUpdateRequestDto>>();
 
         _participantService = new ParticipantService(
             _repositoryManagerMock.Object,
-            _mapperMock.Object,
-            _updateValidatorMock.Object,
-            _createValidatorMock.Object);
+            _mapperMock.Object);
     }
 
     [Fact]
@@ -38,10 +32,6 @@ public class ParticipantServiceTests
     {
         // Arrange
         var validationResult = new ValidationResult();
-
-        _createValidatorMock.Setup(v =>
-        v.ValidateAsync(It.IsAny<ParticipantForCreateRequestDto>(), default))
-            .ReturnsAsync(validationResult);
 
         var eventId = Guid.NewGuid();
         var eventModel = new Event
@@ -82,9 +72,6 @@ public class ParticipantServiceTests
 			trackChanges);
 
         // Assert
-        _createValidatorMock.Verify(v =>
-        v.ValidateAsync(It.IsAny<ParticipantForCreateRequestDto>(), default), Times.Once);
-
         _repositoryManagerMock.Verify(r =>
         r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
@@ -227,12 +214,6 @@ public class ParticipantServiceTests
     public async void UpdateParticipantAsync_ReturnsVoid()
     {
         // Arrange
-        var validationResult = new ValidationResult();
-
-        _updateValidatorMock.Setup(v =>
-        v.ValidateAsync(It.IsAny<ParticipantForUpdateRequestDto>(), default))
-            .ReturnsAsync(validationResult);
-
         var participantId = Guid.NewGuid();
         var participantModel = new Participant
         {
@@ -266,9 +247,6 @@ public class ParticipantServiceTests
 			trackChanges);
 
         // Assert
-        _updateValidatorMock.Verify(v =>
-        v.ValidateAsync(It.IsAny<ParticipantForUpdateRequestDto>(), default), Times.Once);
-
         _repositoryManagerMock.Verify(r =>
         r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 

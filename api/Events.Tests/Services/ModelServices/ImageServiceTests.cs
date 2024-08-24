@@ -24,8 +24,7 @@ public class ImageServiceTests
         _validatorMock = new Mock<IValidator<IFormFile>>();
         _imageService = new ImageService(
             _repositoryManagerMock.Object,
-            _mapperMock.Object,
-            _validatorMock.Object);
+            _mapperMock.Object);
     }
 
     [Fact]

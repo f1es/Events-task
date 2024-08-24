@@ -48,7 +48,7 @@ public class EventsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> CreateEvent([FromBody] EventForCreateRequestDto eventModel)
+    public async Task<IActionResult> CreateEvent([FromBody] EventRequestDto eventModel)
     {
         var eventResponse = await _serviceManager.EventService.CreateEventAsync(eventModel);
 
@@ -61,7 +61,7 @@ public class EventsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
-	public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventForUpdateRequestDto eventModel)
+	public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventRequestDto eventModel)
     {
         await _serviceManager.EventService.UpdateEventAsync(id, eventModel, trackChanges: true);
 

@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Events.Application.Validators;
 
-public class EventForCreateRequestDtoValidation : AbstractValidator<EventForCreateRequestDto>
+public class EventForCreateRequestDtoValidation : AbstractValidator<EventRequestDto>
 {
     public EventForCreateRequestDtoValidation()
     {

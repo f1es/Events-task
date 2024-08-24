@@ -20,8 +20,6 @@ public class UserServiceTests
     private readonly Mock<IJwtProvider> _jwtProviderMock;
     private readonly Mock<IRefreshProvider> _refreshProviderMock;
     private readonly Mock<IRefreshTokenService> _refreshTokenServiceMock;
-    private readonly Mock<IValidator<UserLoginRequestDto>> _loginValidatorMock;
-    private readonly Mock<IValidator<UserRegisterRequestDto>> _registerValidatorMock;
     private readonly IUserService _userService;
     public UserServiceTests()
     {
@@ -31,8 +29,6 @@ public class UserServiceTests
         _jwtProviderMock = new Mock<IJwtProvider>();
         _refreshProviderMock = new Mock<IRefreshProvider>();
         _refreshTokenServiceMock = new Mock<IRefreshTokenService>();
-        _loginValidatorMock = new Mock<IValidator<UserLoginRequestDto>>();
-        _registerValidatorMock = new Mock<IValidator<UserRegisterRequestDto>>();
 
         _userService = new UserService(
             _repositoryManagerMock.Object, 
@@ -40,9 +36,7 @@ public class UserServiceTests
             _mapperMock.Object, 
             _jwtProviderMock.Object, 
             _refreshProviderMock.Object, 
-            _refreshTokenServiceMock.Object,
-            _loginValidatorMock.Object, 
-            _registerValidatorMock.Object);
+            _refreshTokenServiceMock.Object);
     }
 
     [Fact] 
@@ -50,9 +44,6 @@ public class UserServiceTests
     {
         // Arrange
         var validationResult = new ValidationResult();
-        _registerValidatorMock.Setup(v => 
-        v.Validate(It.IsAny<UserRegisterRequestDto>()))
-            .Returns(validationResult);
 
         var username = "123";
         var email = "email@email.em";
@@ -92,9 +83,6 @@ public class UserServiceTests
         await _userService.RegisterUserAsync(userRegisterDto, trackChanges);
 
         // Assert
-        _registerValidatorMock.Verify(v =>
-		v.Validate(It.IsAny<UserRegisterRequestDto>()), Times.Once);
-
         _repositoryManagerMock.Verify(r =>
 		r.User.GetByUsernameAsync(It.IsAny<string>(), trackChanges), Times.Once);
 
@@ -193,10 +181,6 @@ public class UserServiceTests
     {
         // Arrange
         var validationResult = new ValidationResult();
-        
-        _loginValidatorMock.Setup(v => 
-        v.Validate(It.IsAny<UserLoginRequestDto>()))
-            .Returns(validationResult);
 
         var trackUserChanges = false;
         var trackRefreshTokenChanges = true;
@@ -234,9 +218,6 @@ public class UserServiceTests
         await _userService.LoginUserAsync(userLoginDto, trackUserChanges, trackRefreshTokenChanges);
 
         // Assert
-        _loginValidatorMock.Verify(v =>
-		v.Validate(It.IsAny<UserLoginRequestDto>()), Times.Once);
-
         _repositoryManagerMock.Verify(r =>
 		r.User.GetByUsernameAsync(username, trackUserChanges), Times.Once);
 

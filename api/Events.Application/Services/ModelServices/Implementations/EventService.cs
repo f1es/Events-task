@@ -23,7 +23,7 @@ public class EventService : IEventService
         _repositoryManager = repositoryManager;
         _mapper = mapper;
     }
-    public async Task<EventResponseDto> CreateEventAsync(EventForCreateRequestDto eventDto)
+    public async Task<EventResponseDto> CreateEventAsync(EventRequestDto eventDto)
     {
         var mappedEvent = _mapper.Map<Event>(eventDto);
 
@@ -62,7 +62,7 @@ public class EventService : IEventService
         return eventRsponse;
     }
 
-    public async Task UpdateEventAsync(Guid id, EventForUpdateRequestDto eventDto, bool trackChanges)
+    public async Task UpdateEventAsync(Guid id, EventRequestDto eventDto, bool trackChanges)
     {
         var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
 

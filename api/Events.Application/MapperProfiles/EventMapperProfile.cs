@@ -9,9 +9,7 @@ public class EventMapperProfile : Profile
 {
     public EventMapperProfile()
     {
-		CreateMap<EventForCreateRequestDto, Event>();
-
-		CreateMap<EventForUpdateRequestDto, Event>();
+		CreateMap<EventRequestDto, Event>();
 
 		CreateMap<Event, EventResponseDto>();
 	}
