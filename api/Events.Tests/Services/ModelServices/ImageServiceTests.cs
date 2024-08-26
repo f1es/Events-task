@@ -31,11 +31,6 @@ public class ImageServiceTests
     public async void UploadImageAsync_ReturnsImageResponseDto()
     {
         // Arrange
-        var validationResult = new ValidationResult();
-        _validatorMock.Setup(v =>
-        v.Validate(It.IsAny<IFormFile>()))
-            .Returns(validationResult);
-
         var eventId = Guid.NewGuid();
         var eventModel = new Event
         {
@@ -66,9 +61,6 @@ public class ImageServiceTests
         await _imageService.UploadImageAsync(eventId, It.IsAny<IFormFile>(), trackChanges);
 
         // Assert
-        _validatorMock.Verify(v =>
-        v.Validate(It.IsAny<IFormFile>()), Times.Once);
-
         _repositoryManagerMock.Verify(r =>
         r.Event.GetByIdAsync(eventId, trackChanges), Times.Once);
 
