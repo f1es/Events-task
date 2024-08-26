@@ -36,7 +36,7 @@ public class RefreshTokenServiceTests
             .Returns(It.IsAny<RefreshToken>());
 
         _repositoryManagerMock.Setup(r =>
-        r.RefreshToken.CreateRefreshToken(It.IsAny<RefreshToken>()));
+        r.RefreshToken.Create(It.IsAny<RefreshToken>()));
 
         // Act
         await _refreshTokenService.CreateRefreshTokenAsync(It.IsAny<Guid>());
@@ -46,7 +46,7 @@ public class RefreshTokenServiceTests
 		r.GenerateToken(It.IsAny<Guid>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-		r.RefreshToken.CreateRefreshToken(It.IsAny<RefreshToken>()), Times.Once);
+		r.RefreshToken.Create(It.IsAny<RefreshToken>()), Times.Once);
     }
 
     [Fact]

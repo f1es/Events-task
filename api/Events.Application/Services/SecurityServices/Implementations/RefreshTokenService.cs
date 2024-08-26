@@ -28,7 +28,7 @@ public class RefreshTokenService : IRefreshTokenService
     {
         var token = _refreshProvider.GenerateToken(userId);
 
-        _repositoryManager.RefreshToken.CreateRefreshToken(token);
+        _repositoryManager.RefreshToken.Create(token);
 
         await _repositoryManager.SaveAsync();
     }

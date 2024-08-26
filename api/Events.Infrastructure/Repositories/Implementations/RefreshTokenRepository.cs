@@ -12,11 +12,6 @@ public class RefreshTokenRepository : BaseRepository<RefreshToken>, IRefreshToke
     {
         
     }
-	public void CreateRefreshToken(RefreshToken refreshToken) =>
-		Create(refreshToken);
-
-	public void DeleteRefreshToken(RefreshToken refreshToken) => 
-		Delete(refreshToken);
 
 	public async Task<RefreshToken> GetRefreshTokenByUserIdAsync(Guid userId, bool trackChanges) => 
 		await GetByPredicate(rt => rt.UserId.Equals(userId), trackChanges)
