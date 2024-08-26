@@ -74,7 +74,7 @@ public class UserServiceTests
             .Returns(user);
 
         _repositoryManagerMock.Setup(r => 
-        r.User.CreateUser(It.IsAny<User>()));
+        r.User.Create(It.IsAny<User>()));
 
         _refreshTokenServiceMock.Setup(r => 
         r.CreateRefreshTokenAsync(It.IsAny<Guid>()));
@@ -93,7 +93,7 @@ public class UserServiceTests
 		m.Map<User>(It.IsAny<UserRegisterRequestDto>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-		r.User.CreateUser(It.IsAny<User>()), Times.Once);
+		r.User.Create(It.IsAny<User>()), Times.Once);
 
         _refreshTokenServiceMock.Verify(r =>
 		r.CreateRefreshTokenAsync(It.IsAny<Guid>()), Times.Once);

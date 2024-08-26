@@ -79,7 +79,7 @@ public class UserService : IUserService
         
         userModel.Role = Roles.user.ToString();
 
-        _repositoryManager.User.CreateUser(userModel);
+        _repositoryManager.User.Create(userModel);
         await _refreshTokenService.CreateRefreshTokenAsync(userModel.Id);
 
         await _repositoryManager.SaveAsync();

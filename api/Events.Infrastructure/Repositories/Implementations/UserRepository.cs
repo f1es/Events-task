@@ -31,13 +31,4 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 	public async Task<User> GetByUsernameAsync(string username, bool trackChanges) => 
 		await GetByPredicate(u => u.Username.Equals(username), trackChanges)
 		.SingleOrDefaultAsync();
-
-	public void CreateUser(User user) =>
-		Create(user);
-
-	public void DeleteUser(User user) => 
-		Delete(user);
-
-	public void UpdateUser(User user) => 
-		Update(user);
 }
