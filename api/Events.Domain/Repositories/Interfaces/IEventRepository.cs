@@ -1,6 +1,4 @@
 ﻿using Events.Domain.Models;
-using Events.Domain.Shared;
-using Events.Domain.Shared.Filters;
 
 namespace Events.Domain.Repositories.Interfaces;
 

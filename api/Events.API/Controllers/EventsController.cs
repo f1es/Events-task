@@ -1,9 +1,9 @@
 ﻿using Events.API.Attributes;
 using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Enums;
+using Events.Domain.Models;
 using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
-using Events.Domain.Shared.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

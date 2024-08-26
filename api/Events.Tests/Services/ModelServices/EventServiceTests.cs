@@ -5,7 +5,6 @@ using Events.Domain.Models;
 using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
-using Events.Domain.Shared.Filters;
 using FluentValidation;
 using FluentValidation.Results;
 using Moq;

@@ -1,7 +1,5 @@
 ﻿using Events.Domain.Repositories.Interfaces;
 using Events.Domain.Models;
-using Events.Domain.Shared;
-using Events.Domain.Shared.Filters;
 using Events.Infrastructure.Context;
 using Events.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;

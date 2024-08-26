@@ -1,7 +1,6 @@
-﻿using Events.Domain.Shared;
+﻿using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
-using Events.Domain.Shared.Filters;
 
 namespace Events.Application.Services.ModelServices.Interfaces;
 

@@ -2,7 +2,7 @@
 using Events.API.Extensions;
 using Events.Application.Extensions;
 using Events.Application.Services.ModelServices.Interfaces;
-using Events.Domain.Shared;
+using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

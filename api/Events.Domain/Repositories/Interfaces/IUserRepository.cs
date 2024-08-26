@@ -1,5 +1,4 @@
 ﻿using Events.Domain.Models;
-using Events.Domain.Shared;
 
 namespace Events.Domain.Repositories.Interfaces;
 

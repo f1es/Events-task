@@ -5,7 +5,6 @@ using Events.Application.Services.SecurityServices.Interfaces;
 using Events.Domain.Enums;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
-using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
 using FluentValidation;
