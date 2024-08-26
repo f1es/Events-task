@@ -29,8 +29,10 @@ public class ParticipantService : IParticipantService
         var userModel = await GetUserByIdAndCheckIfExistAsync(userId, trackChanges);
 
         var participantModel = _mapper.Map<Participant>(participant);
+        participantModel.EventId = eventId;
+        participantModel.UserId = userId;
 
-        _repositoryManager.Participant.CreateParticipant(eventId, userId, participantModel);
+        _repositoryManager.Participant.Create(participantModel);
 
         await _repositoryManager.SaveAsync();
 
@@ -45,7 +47,7 @@ public class ParticipantService : IParticipantService
 
         var participantModel = await GetParticipantByIdAndCheckIfExistAsync(eventId, id, trackChanges);
 
-        _repositoryManager.Participant.DeleteParticipant(participantModel);
+        _repositoryManager.Participant.Delete(participantModel);
 
         await _repositoryManager.SaveAsync();
     }

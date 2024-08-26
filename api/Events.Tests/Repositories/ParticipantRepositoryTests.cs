@@ -58,7 +58,7 @@ public class ParticipantRepositoryTests
         var testParticipant = GetTestParticipant(participantGuid);
 
         // Act 
-        repository.CreateParticipant(new Guid(), new Guid(), testParticipant);
+        repository.Create(testParticipant);
         context.SaveChanges();
 
         // Assert
@@ -78,7 +78,7 @@ public class ParticipantRepositoryTests
         context.SaveChanges();
 
         // Act
-        repository.DeleteParticipant(testParticipant);
+        repository.Delete(testParticipant);
         context.SaveChanges();
 
         // Assert

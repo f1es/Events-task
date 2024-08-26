@@ -28,16 +28,4 @@ public class ParticipantRepository : BaseRepository<Participant>, IParticipantRe
 	public async Task<Participant> GetByIdAsync(Guid id, bool trackChanges) => 
 		await GetByPredicate(p => p.Id.Equals(id), trackChanges)
 		.SingleOrDefaultAsync();
-
-	public void CreateParticipant(Guid eventId, Guid userId, Participant participant)
-	{
-		participant.UserId = userId;
-		participant.EventId = eventId;
-		Create(participant);
-	}
-	public void DeleteParticipant(Participant participant) =>
-		Delete(participant);
-
-	public void UpdateParticipant(Participant participant) => 
-		Update(participant);
 }

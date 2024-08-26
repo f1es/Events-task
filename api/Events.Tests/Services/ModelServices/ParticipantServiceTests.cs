@@ -58,7 +58,7 @@ public class ParticipantServiceTests
             .Returns(It.IsAny<Participant>());
 
         _repositoryManagerMock.Setup(r =>
-        r.Participant.CreateParticipant(eventId, userId, It.IsAny<Participant>()));
+        r.Participant.Create(It.IsAny<Participant>()));
 
         _mapperMock.Setup(m => m.Map<ParticipantResponseDto>(It.IsAny<Participant>()))
             .Returns(It.IsAny<ParticipantResponseDto>());
@@ -81,7 +81,7 @@ public class ParticipantServiceTests
         m.Map<Participant>(It.IsAny<ParticipantRequestDto>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Participant.CreateParticipant(eventId, userId, It.IsAny<Participant>()), Times.Once);
+        r.Participant.Create(It.IsAny<Participant>()), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<ParticipantResponseDto>(It.IsAny<Participant>()), Times.Once);
@@ -193,7 +193,7 @@ public class ParticipantServiceTests
             .ReturnsAsync(participantModel);
 
         _repositoryManagerMock.Setup(r =>
-        r.Participant.DeleteParticipant(participantModel));
+        r.Participant.Delete(participantModel));
 
         // Act 
         await _participantService.DeleteParticipantAsync(eventId, participantId, trackChanges);
@@ -206,7 +206,7 @@ public class ParticipantServiceTests
         r.Participant.GetByIdAsync(participantId, trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Participant.DeleteParticipant(participantModel), Times.Once);
+        r.Participant.Delete(participantModel), Times.Once);
     }
 
     [Fact]
