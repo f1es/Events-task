@@ -53,9 +53,16 @@ public class ParticipantServiceTests
         r.User.GetByIdAsync(userId, trackChanges))
             .ReturnsAsync(userModel);
 
+        var participantId = Guid.NewGuid();
+        var participantModel = new Participant
+        {
+            Id = participantId,
+            EventId = eventId,
+        };
+
         _mapperMock.Setup(m =>
         m.Map<Participant>(It.IsAny<ParticipantRequestDto>()))
-            .Returns(It.IsAny<Participant>());
+            .Returns(participantModel);
 
         _repositoryManagerMock.Setup(r =>
         r.Participant.Create(It.IsAny<Participant>()));
