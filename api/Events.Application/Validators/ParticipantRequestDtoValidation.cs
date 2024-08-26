@@ -19,6 +19,7 @@ public class ParticipantRequestDtoValidation : AbstractValidator<ParticipantRequ
             .NotEmpty();
 
         RuleFor(p => p.Email)
+            .EmailAddress()
             .NotEmpty();
     }
 }
