@@ -51,7 +51,7 @@ public class ImageServiceTests
             .Returns(image);
 
         _repositoryManagerMock.Setup(r =>
-        r.Image.CreateImage(eventId, It.IsAny<Image>()));
+        r.Image.Create(It.IsAny<Image>()));
 
         _mapperMock.Setup(m =>
         m.Map<ImageResponseDto>(It.IsAny<Image>()))
@@ -68,7 +68,7 @@ public class ImageServiceTests
         m.Map<Image>(It.IsAny<IFormFile>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Image.CreateImage(eventId, It.IsAny<Image>()), Times.Once);
+        r.Image.Create(It.IsAny<Image>()), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<ImageResponseDto>(It.IsAny<Image>()), Times.Once);
@@ -191,7 +191,7 @@ public class ImageServiceTests
             .ReturnsAsync(image);
 
         _repositoryManagerMock.Setup(r =>
-        r.Image.DeleteImage(image));
+        r.Image.Delete(image));
 
         // Act 
         await _imageService.DeleteImageAsync(eventId, trackChanges);
@@ -204,6 +204,6 @@ public class ImageServiceTests
 		r.Image.GetImageAsync(It.IsAny<Guid>(), trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-		r.Image.DeleteImage(It.IsAny<Image>()), Times.Once);
+		r.Image.Delete(It.IsAny<Image>()), Times.Once);
     }
 }

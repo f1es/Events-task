@@ -39,7 +39,7 @@ public class ImageRepositoryTests
 		var testImage = GetTestImage(imageGuid);
 
         // Act
-		repository.CreateImage(It.IsAny<Guid>(), testImage);
+		repository.Create(testImage);
 		context.SaveChanges();
 
 		// Assert
@@ -59,7 +59,7 @@ public class ImageRepositoryTests
 		context.SaveChanges();
 
 		// Act
-		repository.DeleteImage(testImage);
+		repository.Delete(testImage);
 		context.SaveChanges();
 
 		// Assert

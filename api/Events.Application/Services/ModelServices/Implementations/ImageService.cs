@@ -29,7 +29,7 @@ public class ImageService : IImageService
         var image = _mapper.Map<Image>(imageForm);
         image.EventId = eventId;
 
-        _repositoryManager.Image.CreateImage(eventId, image);
+        _repositoryManager.Image.Create(image);
 
         await _repositoryManager.SaveAsync();
 
@@ -66,7 +66,7 @@ public class ImageService : IImageService
 
         var image = await GetImageByEventIdAndCheckIfExistAsync(eventId, trackChanges);
 
-		_repositoryManager.Image.DeleteImage(image);
+		_repositoryManager.Image.Delete(image);
 
 		await _repositoryManager.SaveAsync();
 	}
