@@ -1,4 +1,4 @@
-﻿namespace Events.Domain.Shared;
+﻿namespace Events.Domain.Models;
 
 public record Paging(
     int Page = 1,

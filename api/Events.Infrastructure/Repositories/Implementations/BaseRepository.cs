@@ -5,24 +5,24 @@ using System.Linq.Expressions;
 
 namespace Events.Infrastructure.Repositories.Implementations;
 
-public abstract class BaseRepository<T> where T : class
+public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
 {
 	protected readonly EventsDBContext eventsDBContext;
     public BaseRepository(EventsDBContext eventsDBContext)
     {
         this.eventsDBContext = eventsDBContext;
     }
-	protected void Create(T entity) =>
+	public void Create(T entity) =>
 		eventsDBContext
 		.Set<T>()
 		.Add(entity);
 
-	protected void Delete(T entity) =>
+	public void Delete(T entity) =>
 		eventsDBContext
 		.Set<T>()
 		.Remove(entity);
 
-	protected void Update(T entity) =>
+	public void Update(T entity) =>
 		eventsDBContext 
 		.Set<T>()
 		.Update(entity);

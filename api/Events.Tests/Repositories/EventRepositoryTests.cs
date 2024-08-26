@@ -61,7 +61,7 @@ public class EventRepositoryTests
         var testEvent = GetTestEvent(eventGuid);
 
         // Act
-        repository.CreateEvent(testEvent);
+        repository.Create(testEvent);
         context.SaveChanges();
 
         // Assert
@@ -82,7 +82,7 @@ public class EventRepositoryTests
         context.SaveChanges();
 
         // Act
-        repository.DeleteEvent(testEvent);
+        repository.Delete(testEvent);
         context.SaveChanges();
 
         // Assert

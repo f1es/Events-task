@@ -62,13 +62,4 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
 	public async Task<Event> GetByIdAsync(Guid id, bool trackChanges) =>
 		await GetByPredicate(e => e.Id.Equals(id), trackChanges)
 		.SingleOrDefaultAsync();
-
-	public void CreateEvent(Event eventModel) => 
-		Create(eventModel);
-
-	public void UpdateEvent(Event eventModel) =>
-		Update(eventModel);
-
-	public void DeleteEvent(Event eventModel) =>
-		Delete(eventModel);
 }

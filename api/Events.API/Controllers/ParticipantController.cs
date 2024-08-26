@@ -1,6 +1,6 @@
 ﻿using Events.API.Attributes;
 using Events.Application.Services.ModelServices.Interfaces;
-using Events.Domain.Shared;
+using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

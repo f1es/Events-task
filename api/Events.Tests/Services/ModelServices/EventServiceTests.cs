@@ -2,7 +2,6 @@
 using Events.Domain.Repositories.Interfaces;
 using Events.Application.Services.ModelServices.Implementations;
 using Events.Domain.Models;
-using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
 using FluentValidation;
@@ -56,7 +55,7 @@ public class EventServiceTests
         // Arrange
         _mapperMock.Setup(m => m.Map<Event>(It.IsAny<EventRequestDto>())).Returns(It.IsAny<Event>());
 
-        _repositoryManagerMock.Setup(r => r.Event.CreateEvent(It.IsAny<Event>()));
+        _repositoryManagerMock.Setup(r => r.Event.Create(It.IsAny<Event>()));
 
         _mapperMock.Setup(m => m.Map<EventResponseDto>(It.IsAny<Event>())).Returns(It.IsAny<EventResponseDto>());
 
@@ -68,7 +67,7 @@ public class EventServiceTests
         v.Map<Event>(It.IsAny<EventRequestDto>()), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Event.CreateEvent(It.IsAny<Event>()), Times.Once);
+        r.Event.Create(It.IsAny<Event>()), Times.Once);
 
         _mapperMock.Verify(m =>
         m.Map<EventResponseDto>(It.IsAny<Event>()), Times.Once);
@@ -121,7 +120,7 @@ public class EventServiceTests
             .ReturnsAsync(eventModel);
 
         _repositoryManagerMock.Setup(r =>
-        r.Event.DeleteEvent(eventModel));
+        r.Event.Delete(eventModel));
 
         // Act 
         await _eventService.DeleteEventAsync(eventId, trackChanges);
@@ -131,7 +130,7 @@ public class EventServiceTests
         r.Event.GetByIdAsync(It.IsAny<Guid>(), trackChanges), Times.Once);
 
         _repositoryManagerMock.Verify(r =>
-        r.Event.DeleteEvent(It.IsAny<Event>()), Times.Once);
+        r.Event.Delete(It.IsAny<Event>()), Times.Once);
     }
     [Fact]
     public async void GetAllEventsAsync_ReturnsIEnumerableEventResponseDto()

@@ -4,7 +4,6 @@ using Events.Domain.Repositories.Interfaces;
 using Events.Application.Services.ModelServices.Interfaces;
 using Events.Domain.Exceptions;
 using Events.Domain.Models;
-using Events.Domain.Shared;
 using Events.Domain.Shared.DTO.Request;
 using Events.Domain.Shared.DTO.Response;
 using FluentValidation;
@@ -26,7 +25,7 @@ public class EventService : IEventService
     {
         var mappedEvent = _mapper.Map<Event>(eventDto);
 
-        _repositoryManager.Event.CreateEvent(mappedEvent);
+        _repositoryManager.Event.Create(mappedEvent);
 
         await _repositoryManager.SaveAsync();
 
@@ -38,7 +37,7 @@ public class EventService : IEventService
     {
         var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
 
-        _repositoryManager.Event.DeleteEvent(eventModel);
+        _repositoryManager.Event.Delete(eventModel);
 
         await _repositoryManager.SaveAsync();
     }
