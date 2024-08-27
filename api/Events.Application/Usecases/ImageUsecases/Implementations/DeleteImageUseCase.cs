@@ -10,14 +10,11 @@ namespace Events.Application.Usecases.ImageUsecases.Implementations;
 public class DeleteImageUseCase : IDeleteImageUseCase
 {
 	private readonly IRepositoryManager _repositoryManager;
-	private readonly IMapper _mapper;
 
 	public DeleteImageUseCase(
-		IRepositoryManager repositoryManager,
-		IMapper mapper)
+		IRepositoryManager repositoryManager)
 	{
 		_repositoryManager = repositoryManager;
-		_mapper = mapper;
 	}
 
 	public async Task DeleteImageAsync(Guid eventId, bool trackChanges)
