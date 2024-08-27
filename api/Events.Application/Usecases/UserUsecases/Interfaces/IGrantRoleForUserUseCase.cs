@@ -5,8 +5,8 @@ namespace Events.Application.Usecases.UserUsecases.Interfaces;
 
 public interface IGrantRoleForUserUseCase
 {
-    Task<(string accessToken, RefreshToken refreshToken)> LoginUserAsync(
-        UserLoginRequestDto user,
-        bool trackUserChanges,
-        bool trackRefreshTokenChanges);
+	public Task GrantRoleForUserAsync(
+		Guid id, 
+		string role, 
+		bool trackChanges);
 }
