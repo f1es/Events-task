@@ -19,4 +19,15 @@
     <ProjectReference Include="..\Events.Domain\Events.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Usecases\Event\Implementations\" />
+    <Folder Include="Usecases\Image\Implementations\" />
+    <Folder Include="Usecases\JwtProvider\Implementations\" />
+    <Folder Include="Usecases\Participant\Implementations\" />
+    <Folder Include="Usecases\PasswordHasher\Implementations\" />
+    <Folder Include="Usecases\RefreshProvider\Implementations\" />
+    <Folder Include="Usecases\RefreshTokenUseCase\Implementations\" />
+    <Folder Include="Usecases\User\Implementations\" />
+  </ItemGroup>
+
 </Project>
