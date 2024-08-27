@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using Events.Application.Usecases.ImageUsecases.Extensions;
+﻿using Events.Application.Usecases.ImageUsecases.Extensions;
 using Events.Application.Usecases.ImageUsecases.Interfaces;
-using Events.Domain.Exceptions;
-using Events.Domain.Models;
 using Events.Domain.Repositories.Interfaces;
 
 namespace Events.Application.Usecases.ImageUsecases.Implementations;
