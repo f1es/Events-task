@@ -1,12 +1,42 @@
-﻿using Events.Application.Usecases.EventUsecases.Interfaces;
+﻿using AutoMapper;
+using Events.Application.Usecases.EventUsecases.Interfaces;
+using Events.Domain.Exceptions;
+using Events.Domain.Models;
+using Events.Domain.Repositories.Interfaces;
 using Events.Domain.Shared.DTO.Request;
 
 namespace Events.Application.Usecases.EventUsecases.Implementations;
 
 public class UpdateEventUseCase : IUpdateEventUseCase
 {
-    public Task UpdateEventAsync(Guid id, EventRequestDto eventDto, bool trackChanges)
+	private readonly IRepositoryManager _repositoryManager;
+	private readonly IMapper _mapper;
+
+	public UpdateEventUseCase(
+		IRepositoryManager repositoryManager, 
+		IMapper mapper)
+	{
+		_repositoryManager = repositoryManager;
+		_mapper = mapper;
+	}
+
+	public async Task UpdateEventAsync(Guid id, EventRequestDto eventDto, bool trackChanges)
     {
-        throw new NotImplementedException();
-    }
+		var eventModel = await GetEventByIdAndCheckIfExistAsync(id, trackChanges);
+
+		eventModel = _mapper.Map(eventDto, eventModel);
+
+		await _repositoryManager.SaveAsync();
+	}
+	private async Task<Event> GetEventByIdAndCheckIfExistAsync(Guid id, bool trackChanges)
+	{
+		var eventModel = await _repositoryManager.Event.GetByIdAsync(id, trackChanges);
+
+		if (eventModel is null)
+		{
+			throw new NotFoundException($"event with id {id} not found");
+		}
+
+		return eventModel;
+	}
 }
