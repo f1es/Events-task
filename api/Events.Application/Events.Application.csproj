@@ -20,14 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Usecases\Event\Implementations\" />
-    <Folder Include="Usecases\Image\Implementations\" />
-    <Folder Include="Usecases\JwtProvider\Implementations\" />
-    <Folder Include="Usecases\Participant\Implementations\" />
-    <Folder Include="Usecases\PasswordHasher\Implementations\" />
-    <Folder Include="Usecases\RefreshProvider\Implementations\" />
+    <Folder Include="Usecases\PasswordHasherUsecases\Implementations\" />
+    <Folder Include="Usecases\RefreshProviderUsecase\Implementations\" />
     <Folder Include="Usecases\RefreshTokenUseCase\Implementations\" />
-    <Folder Include="Usecases\User\Implementations\" />
+    <Folder Include="Usecases\UserUsecases\Implementations\" />
   </ItemGroup>
 
 </Project>
