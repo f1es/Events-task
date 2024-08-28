@@ -1,5 +1,6 @@
 ﻿using Events.API.Attributes;
 using Events.Application.Services.ModelServices.Interfaces;
+using Events.Application.Usecases.EventUsecases.Interfaces;
 using Events.Domain.Enums;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
@@ -13,10 +14,10 @@ namespace Events.API.Controllers;
 [Authorize]
 public class EventsController : ControllerBase
 {
-    private readonly IServiceManager _serviceManager;
-    public EventsController(IServiceManager serviceManager)
+    private readonly IEventUseCaseManager _eventUseCaseManager;
+    public EventsController(IEventUseCaseManager eventUseCaseManager)
     {
-        _serviceManager = serviceManager;
+        _eventUseCaseManager = eventUseCaseManager;
     }
 
     [HttpGet]
@@ -25,9 +26,9 @@ public class EventsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	public async Task<IActionResult> GetEvents([FromQuery] EventFilter eventFilter, [FromQuery] Paging paging)
     {
-        var events = await _serviceManager.EventService.GetAllEventsAsync(eventFilter, paging, trackChanges: false);
+        var events = await _eventUseCaseManager.GetAllEventsUseCase.GetAllEventsAsync(eventFilter, paging, trackChanges: false);
 
-        return Ok(events);
+		return Ok(events);
     }
 
     [HttpGet("{id:guid}", Name = "EventById")]
@@ -36,9 +37,9 @@ public class EventsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GetEvent(Guid id)
     {
-        var eventResponse = await _serviceManager.EventService.GetEventByIdAsync(id, trackChanges: false);
+        var eventResponse = await _eventUseCaseManager.GetEventByIdUseCase.GetEventByIdAsync(id, trackChanges: false);
 
-        return Ok(eventResponse);
+		return Ok(eventResponse);
     }
 
     [HttpPost]
@@ -49,9 +50,9 @@ public class EventsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateEvent([FromBody] EventRequestDto eventModel)
     {
-        var eventResponse = await _serviceManager.EventService.CreateEventAsync(eventModel);
+        var eventResponse = await _eventUseCaseManager.CreateEventUseCase.CreateEventAsync(eventModel); 
 
-        return CreatedAtRoute("EventById", new { id = eventResponse.Id }, eventResponse);
+		return CreatedAtRoute("EventById", new { id = eventResponse.Id }, eventResponse);
     }
 
     [HttpPut("{id:guid}")]
@@ -62,7 +63,7 @@ public class EventsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventRequestDto eventModel)
     {
-        await _serviceManager.EventService.UpdateEventAsync(id, eventModel, trackChanges: true);
+        await _eventUseCaseManager.UpdateEventUseCase.UpdateEventAsync(id, eventModel, trackChanges: true);
 
         return NoContent();
     }
@@ -74,7 +75,7 @@ public class EventsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> DeleteEvent(Guid id)
     {
-        await _serviceManager.EventService.DeleteEventAsync(id, trackChanges: false);
+        await _eventUseCaseManager.DeleteEventUseCase.DeleteEventAsync(id, trackChanges: false);
 
         return NoContent();
     }

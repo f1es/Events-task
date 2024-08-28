@@ -19,11 +19,4 @@
     <ProjectReference Include="..\Events.Domain\Events.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Usecases\PasswordHasherUsecases\Implementations\" />
-    <Folder Include="Usecases\RefreshProviderUsecase\Implementations\" />
-    <Folder Include="Usecases\RefreshTokenUseCase\Implementations\" />
-    <Folder Include="Usecases\UserUsecases\Implementations\" />
-  </ItemGroup>
-
 </Project>

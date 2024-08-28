@@ -2,6 +2,9 @@
 using Events.API.Extensions;
 using Events.Application.Extensions;
 using Events.Application.Services.ModelServices.Interfaces;
+using Events.Application.Usecases.RefreshProviderUsecase.Interfaces;
+using Events.Application.Usecases.RefreshTokenUseCase.Interfaces;
+using Events.Application.Usecases.UserUsecases.Interfaces;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +16,14 @@ namespace Events.API.Controllers;
 [Route("api/users")]
 public class UserController : ControllerBase
 {
-    private readonly IServiceManager _serviceManager;
-    public UserController(IServiceManager serviceManager)
+    private readonly IUserUseCaseManager _userUseCaseManager;
+    private readonly IRefreshTokenUseCaseManager _refreshTokenUseCaseManager;
+    public UserController(
+        IUserUseCaseManager userUseCaseManager,
+		IRefreshTokenUseCaseManager refreshTokenUseCaseManager)
     {
-        _serviceManager = serviceManager;
+        _userUseCaseManager = userUseCaseManager;
+        _refreshTokenUseCaseManager = refreshTokenUseCaseManager;
     }
 
     [HttpPost("register")]
@@ -26,7 +33,7 @@ public class UserController : ControllerBase
 
 	public async Task<IActionResult> RegisterUser([FromBody] UserRegisterRequestDto user)
     {
-        await _serviceManager.UserService.RegisterUserAsync(user, trackChanges: false);
+        await _userUseCaseManager.RegisterUserUseCase.RegisterUserAsync(user, trackChanges: false);
 
         return Created();
     }
@@ -36,9 +43,9 @@ public class UserController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	public async Task<IActionResult> LoginUser([FromBody] UserLoginRequestDto user)
     {
-        var tokens = await _serviceManager.UserService.LoginUserAsync(
-            user, 
-            trackUserChanges: false,
+        var tokens = await _userUseCaseManager.LoginUserUseCase.LoginUserAsync(
+            user,
+            trackUserChanges: false, 
             trackRefreshTokenChanges: true);
 
         Response.AppendAccessToken(tokens.accessToken);
@@ -53,11 +60,12 @@ public class UserController : ControllerBase
     {
         var refreshTokenValue = Request.GetRefreshToken();
 
-        var tokens = await _serviceManager
-            .RefreshTokenService
-            .RefreshTokensFromTokenValue(refreshTokenValue, trackChanges: true);
+        var tokens = await _refreshTokenUseCaseManager
+            .RefreshTokenFromTokenValueUseCase
+            .RefreshTokensFromTokenValue(refreshTokenValue, trackChanges: false);
 
-        Response.AppendAccessToken(tokens.accessToken);
+
+		Response.AppendAccessToken(tokens.accessToken);
         Response.AppendRefreshToken(tokens.refreshToken);
 
 		return Ok();
@@ -69,8 +77,8 @@ public class UserController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GrantRoleForUser([FromBody] GrantRoleDto grantRole)
     {
-        await _serviceManager.UserService.GrantRoleForUserAsync(
-            grantRole.UserId, 
+        await _userUseCaseManager.GrantRoleForUserUseCase.GrantRoleForUserAsync(
+            grantRole.UserId,
             grantRole.Role, 
             trackChanges: true);
 
@@ -81,7 +89,7 @@ public class UserController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GetUser(Guid id)
     {
-        var user = await _serviceManager.UserService.GetUserByIdAsync(id, trackChanges: false);
+        var user = await _userUseCaseManager.GetUserByIdUseCase.GetUserByIdAsync(id, trackChanges: false);
 
         return Ok(user);
     }
@@ -90,7 +98,7 @@ public class UserController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<IActionResult> GetUsers([FromQuery] Paging paging)
     {
-        var users = await _serviceManager.UserService.GetAllUsersAsync(paging, trackChanges: false);
+        var users = await _userUseCaseManager.GetAllUsersUseCase.GetAllUsersAsync(paging, trackChanges: false);
 
         return Ok(users);
     }
