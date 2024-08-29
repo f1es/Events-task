@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Events.Application.Services.SecurityServices.Interfaces;
 using Events.Application.Usecases.PasswordHasherUsecases.Interfaces;
 using Events.Application.Usecases.RefreshTokenUseCase.Interfaces;
 using Events.Application.Usecases.UserUsecases.Interfaces;
