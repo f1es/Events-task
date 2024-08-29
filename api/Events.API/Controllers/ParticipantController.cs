@@ -1,5 +1,4 @@
 ﻿using Events.API.Attributes;
-using Events.Application.Services.ModelServices.Interfaces;
 using Events.Application.Usecases.JwtProviderUsecases.Interfaces;
 using Events.Application.Usecases.ParticipantUsecases.Interfaces;
 using Events.Domain.Models;

@@ -1,7 +1,5 @@
 ﻿using Events.API.Attributes;
-using Events.Application.Services.ModelServices.Interfaces;
 using Events.Application.Usecases.EventUsecases.Interfaces;
-using Events.Domain.Enums;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;

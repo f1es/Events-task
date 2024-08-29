@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Events.Application.Services.SecurityServices.Interfaces;
 using Events.Application.Usecases.UserUsecases.Interfaces;
 using Events.Domain.Models;
 using Events.Domain.Repositories.Interfaces;

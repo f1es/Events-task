@@ -1,14 +1,9 @@
-﻿using Events.API.Attributes;
-using Events.API.Extensions;
-using Events.Application.Extensions;
-using Events.Application.Services.ModelServices.Interfaces;
-using Events.Application.Usecases.RefreshProviderUsecase.Interfaces;
+﻿using Events.API.Extensions;
 using Events.Application.Usecases.RefreshTokenUseCase.Interfaces;
 using Events.Application.Usecases.UserUsecases.Interfaces;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Events.API.Controllers;
 

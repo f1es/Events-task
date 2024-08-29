@@ -1,5 +1,4 @@
 ﻿using Events.API.Attributes;
-using Events.Application.Services.ModelServices.Interfaces;
 using Events.Application.Usecases.ImageUsecases.Interfaces;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
