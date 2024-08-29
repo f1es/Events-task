@@ -39,6 +39,7 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 
 		var passwordHash = _generateHashUseCase.GenerateHash(user.Password);
 		var userModel = _mapper.Map<User>(user);
+		userModel.Id = Guid.NewGuid();
 
 		userModel.PasswordHash = passwordHash;
 

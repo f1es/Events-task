@@ -31,6 +31,7 @@ public class CreateParticipantUseCase : ICreateParticipantUseCase
 		var userModel = await _repositoryManager.GetUserByIdAndCheckIfExistAsync(userId, trackChanges);
 
 		var participantModel = _mapper.Map<Participant>(participant);
+		participantModel.Id = Guid.NewGuid();
 		participantModel.EventId = eventId;
 		participantModel.UserId = userId;
 

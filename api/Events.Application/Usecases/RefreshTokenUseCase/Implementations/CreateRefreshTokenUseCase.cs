@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Events.Application.Services.SecurityServices.Interfaces;
-using Events.Application.Usecases.RefreshProviderUsecase.Interfaces;
+﻿using Events.Application.Usecases.RefreshProviderUsecase.Interfaces;
 using Events.Application.Usecases.RefreshTokenUseCase.Interfaces;
 using Events.Domain.Repositories.Interfaces;
 
@@ -19,12 +17,11 @@ public class CreateRefreshTokenUseCase : ICreateRefreshTokenUseCase
 
 	public async Task CreateRefreshTokenAsync(Guid userId)
 	{
-		{
-			var token = _generateRefreshTokenUseCase.GenerateToken(userId);
+		var token = _generateRefreshTokenUseCase.GenerateToken(userId);
+		token.Id = Guid.NewGuid();
 
-			_repositoryManager.RefreshToken.Create(token);
+		_repositoryManager.RefreshToken.Create(token);
 
-			await _repositoryManager.SaveAsync();
-		}
+		await _repositoryManager.SaveAsync();
 	}
 }

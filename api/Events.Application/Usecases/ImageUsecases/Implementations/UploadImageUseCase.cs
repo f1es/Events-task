@@ -24,6 +24,7 @@ public class UploadImageUseCase : IUploadImageUseCase
 		await _repositoryManager.GetEventByIdAndCheckIfExistAsync(eventId, trackChanges);
 
 		var image = _mapper.Map<Image>(imageForm);
+		image.Id = Guid.NewGuid();
 		image.EventId = eventId;
 
 		_repositoryManager.Image.Create(image);

@@ -21,6 +21,7 @@ public class CreateEventUseCase : ICreateEventUseCase
     public async Task<EventResponseDto> CreateEventAsync(EventRequestDto eventDto)
     {
 		var mappedEvent = _mapper.Map<Event>(eventDto);
+		mappedEvent.Id = Guid.NewGuid();
 
 		_repositoryManager.Event.Create(mappedEvent);
 
