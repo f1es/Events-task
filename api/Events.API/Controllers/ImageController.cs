@@ -24,7 +24,7 @@ public class ImageController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> UploadImage(Guid eventId, [FromForm] ImageRequestDto image)
 	{
-		await _imageUseCaseManager.UpdateImageUseCase.UpdateImageAsync(eventId, image.Image, trackChanges: false);
+		await _imageUseCaseManager.UploadImageUseCase.UploadImageAsync(eventId, image.Image, trackChanges: false);
 
 		return NoContent();
 	}
