@@ -23,7 +23,7 @@ builder.Services.ConfigureValidators();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureMapperProfiles();
 builder.Services.ConfigureRepositories();
-builder.Services.ConfigureServices();
+builder.Services.ConfigureUsecases();
 builder.Services.ConfigureApiAuthentication(builder.Configuration);
 
 builder.Services.AddDbContext<EventsDBContext>(options =>

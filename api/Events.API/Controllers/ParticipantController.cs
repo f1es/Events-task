@@ -1,5 +1,6 @@
 ﻿using Events.API.Attributes;
-using Events.Application.Services.ModelServices.Interfaces;
+using Events.Application.Usecases.JwtProviderUsecases.Interfaces;
+using Events.Application.Usecases.ParticipantUsecases.Interfaces;
 using Events.Domain.Models;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,12 @@ namespace Events.API.Controllers;
 [Authorize]
 public class ParticipantController : ControllerBase
 {
-    private readonly IServiceManager _serviceManager;
-    public ParticipantController(IServiceManager serviceManager)
+    private readonly IParticipantUseCaseManager _participantUseCaseManager;
+    private readonly IJwtProviderUseCaseManager _jwtProviderUseCaseManager;
+    public ParticipantController(IParticipantUseCaseManager participantUseCaseManager, IJwtProviderUseCaseManager jwtProviderUseCaseManager)
     {
-        _serviceManager = serviceManager;
+        _participantUseCaseManager = participantUseCaseManager;
+        _jwtProviderUseCaseManager = jwtProviderUseCaseManager;
     }
 
     [HttpGet]
@@ -26,8 +29,8 @@ public class ParticipantController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> GetParticipants(Guid eventId, [FromQuery] Paging paging)
     {
-        var participants = await _serviceManager
-            .ParticipantService
+        var participants = await _participantUseCaseManager
+            .GetAllParticipantsUseCase
             .GetAllParticipantsAsync(eventId, paging, trackChanges: false);
 
         return Ok(participants);
@@ -41,11 +44,12 @@ public class ParticipantController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetParticipant(Guid eventId, Guid id)
     {
-        var participant = await _serviceManager
-            .ParticipantService
+		var participant = await _participantUseCaseManager
+            .GetParticipantByIdUseCase
             .GetParticipantByIdAsync(eventId, id, trackChanges: false);
 
-        return Ok(participant);
+
+		return Ok(participant);
     }
 
     [HttpPost]
@@ -55,13 +59,13 @@ public class ParticipantController : ControllerBase
 	public async Task<IActionResult> CreateParticipant(Guid eventId, [FromBody] ParticipantRequestDto participant)
     {
         Request.Cookies.TryGetValue("acc", out string? token);
-        var userId = _serviceManager.JwtProvider.GetUserId(token);
+        var userId = _jwtProviderUseCaseManager.GetUserIdUseCase.GetUserId(token);
 
-        var participantResponse = await _serviceManager
-            .ParticipantService
+		var participantResponse = await _participantUseCaseManager
+            .CreateParticipantUseCase
             .CreateParticipantAsync(eventId, userId, participant, trackChanges: false);
 
-        return CreatedAtRoute("ParticipantById", new { eventId, id = participantResponse.Id }, participantResponse);
+		return CreatedAtRoute("ParticipantById", new { eventId, id = participantResponse.Id }, participantResponse);
     }
 
     [HttpDelete("{id:guid}")]
@@ -71,8 +75,8 @@ public class ParticipantController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> DeleteParticipant(Guid eventId, Guid id)
     {
-        await _serviceManager
-            .ParticipantService
+        await _participantUseCaseManager
+            .DeleteParticipantUseCase
             .DeleteParticipantAsync(eventId, id, trackChanges: false);
 
         return NoContent();
@@ -86,8 +90,8 @@ public class ParticipantController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> UpdateParticipant(Guid eventId, Guid id, [FromBody] ParticipantRequestDto participant)
     {
-        await _serviceManager
-            .ParticipantService
+        await _participantUseCaseManager
+            .UpdateParticipantUseCase
             .UpdateParticipantAsync(eventId, id, participant, trackChanges: true);
 
         return NoContent();

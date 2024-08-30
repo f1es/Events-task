@@ -1,5 +1,5 @@
 ﻿using Events.API.Attributes;
-using Events.Application.Services.ModelServices.Interfaces;
+using Events.Application.Usecases.ImageUsecases.Interfaces;
 using Events.Domain.Shared.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +11,10 @@ namespace Events.API.Controllers;
 [Authorize]
 public class ImageController : ControllerBase
 {
-	private readonly IServiceManager _serviceManager;
-    public ImageController(IServiceManager serviceManager)
+	private readonly IImageUseCaseManager _imageUseCaseManager;
+    public ImageController(IImageUseCaseManager imageUseCaseManager)
     {
-        _serviceManager = serviceManager;
+		_imageUseCaseManager = imageUseCaseManager;
     }
     [HttpPost]
 	[RequiredRole("Admin, Manager")]
@@ -24,7 +24,7 @@ public class ImageController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	public async Task<IActionResult> UploadImage(Guid eventId, [FromForm] ImageRequestDto image)
 	{
-		await _serviceManager.ImageService.UploadImageAsync(eventId, image.Image, trackChanges: false);
+		await _imageUseCaseManager.UpdateImageUseCase.UpdateImageAsync(eventId, image.Image, trackChanges: false);
 
 		return NoContent();
 	}
@@ -35,7 +35,7 @@ public class ImageController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GetImage(Guid eventId)
 	{
-		var image = await _serviceManager.ImageService.GetImageAsync(eventId, trackChanges: false);
+		var image = await _imageUseCaseManager.GetImageUseCase.GetImageAsync(eventId, trackChanges: false);
 
 		return File(image.Content, image.Type);
 	}
@@ -48,7 +48,7 @@ public class ImageController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> UpdateImage(Guid eventId, [FromForm] ImageRequestDto image)
 	{
-		await _serviceManager.ImageService.UpdateImageAsync(eventId, image.Image, trackChanges: true);
+		await _imageUseCaseManager.UpdateImageUseCase.UpdateImageAsync(eventId, image.Image, trackChanges: true);
 
 		return NoContent();
 	}
@@ -60,7 +60,7 @@ public class ImageController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> DeleteImage(Guid eventId)
 	{
-		await _serviceManager.ImageService.DeleteImageAsync(eventId, trackChanges: false);
+		await _imageUseCaseManager.DeleteImageUseCase.DeleteImageAsync(eventId, trackChanges: false);
 
 		return NoContent();
 	}
